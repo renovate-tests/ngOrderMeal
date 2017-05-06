@@ -1,3 +1,17 @@
 <h1>
   {{title}}
 </h1>
+<table>
+  <tr>
+    <th style="width: 100px">時間\人</th>
+    <th *ngFor="let p of people">
+      {{p}}
+    </th>
+  </tr>
+  <tr *ngFor="let d of getDate">
+    <td style="text-align:center">{{d}}</td>
+    <td *ngFor="let a of getName">
+     {{filterData(d,a) | json}}
+      </td>
+  </tr>
+</table>

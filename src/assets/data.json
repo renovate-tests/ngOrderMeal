@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "beforMoney": 123,
+        "inputMoney": 1234,
+        "spanMoney": 1234,
+        "content": "雞排飯",
+        "store": "王家火雞肉飯",
+        "man": "洪xx",
+        "dateAt": "2017-1-3"
+    },
+    {
+        "id": 2,
+        "beforMoney": 500,
+        "inputMoney": 0,
+        "spanMoney": 1234,
+        "content": "雞排飯",
+        "store": "王家火雞肉飯",
+        "man": "陳xx",
+        "dateAt": "2017-1-1"
+    },
+    {
+        "id": 3,
+        "beforMoney": 5,
+        "inputMoney": 1234,
+        "spanMoney": 1234,
+        "content": "雞排飯",
+        "store": "王家火雞肉飯",
+        "man": "王xx",
+        "dateAt": "2017-1-2"
+    }
+]
