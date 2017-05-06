@@ -1,7 +1,8 @@
-<h1>
+<h3>
   {{title}}
-</h1>
-<table>
+</h3>
+
+<table style="float:left;margin-right:3px">
   <tr>
     <th style="width: 100px">時間\人</th>
     <th *ngFor="let p of people">
@@ -9,9 +10,32 @@
     </th>
   </tr>
   <tr *ngFor="let d of getDate">
-    <td style="text-align:center">{{d}}</td>
-    <td *ngFor="let a of getName">
-     {{filterData(d,a) | json}}
-      </td>
+    <td style="text-align:center" [ngStyle]="{'border-top-width': d.getDay() === 1 ? '3px' : '1px'}">
+      {{d.toLocaleDateString()}}
+      <br> 星期{{['一','二','三','四','五'][d.getDay()-1]}}
+    </td>
+    <td *ngFor="let a of getName" [ngStyle]="{'border-top-width': d.getDay() === 1 ? '3px' : '1px'}">
+      <span type="button" (click)="getInfo(d, a)">
+       <a href="#">{{filterData(d,a)?.M}} </a>
+     </span>
+    </td>
   </tr>
 </table>
+<!--{{infodata| json}}-->
+<span *ngIf="infodata">
+<b>單筆明細:</b> <br>
+ {{"先前金額:"+infodata.beforMoney}}
+ <br >
+ <span style="color:red">
+ {{"今日消費:"+infodata.spanMoney}}
+ </span>
+<br>
+<span style="color:green">
+ {{"今日儲值:"+infodata.inputMoney}}
+ </span>
+<br> {{"店家:"+infodata.store}}
+<br> {{"消費內容:"+ infodata.content}}
+<br> {{"消費者:"+ infodata.man}}
+<br> {{"時間:"+infodata.dateAt}}
+<br> {{"目前金額:"+(infodata.beforMoney +infodata.inputMoney-infodata.spanMoney )}}
+</span>

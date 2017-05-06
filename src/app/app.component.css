@@ -6,5 +6,6 @@ table, th, td {
     border: 1px solid black;
 }
 td {
+    min-width: 70px;
     height: 30px;
 }
