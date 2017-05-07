@@ -6,9 +6,10 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { CheckManageComponent } from './check-manage/check-manage.component';
+import { ListFirebaseComponent } from './list-firebase/list-firebase.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from 'angularfire2';
-import { ListFirebaseComponent } from './list-firebase/list-firebase.component';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 const firebase = {
   apiKey: 'AIzaSyC22dRy8lpaa7QHsfzO_BUWoR4MMVuofd8',
@@ -31,7 +32,8 @@ const firebase = {
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(firebase)
+    AngularFireModule.initializeApp(firebase),
+    AngularFireDatabaseModule
   ],
   providers: [],
   bootstrap: [AppComponent]
