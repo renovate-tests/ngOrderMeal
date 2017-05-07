@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    fetch('../assets/data.json', { method: 'Get' })
+    fetch('../../assets/data.json', { method: 'Get' })
       .then((obj) => obj.json())
       .then((a) => this.arr = a)
       .then(() => this.Init());
