@@ -1,0 +1,22 @@
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+td {
+    min-width: 70px;
+    height: 30px;
+}
+
+.facklink {
+     cursor:pointer;
+     color:blue;
+     text-decoration:underline;
+}
+
+.facklink:hover {
+     text-decoration:none;
+     text-shadow: 1px 1px 1px #555;
+}

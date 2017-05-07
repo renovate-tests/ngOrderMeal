@@ -1,41 +1,13 @@
-<h3>
-  {{title}}
-</h3>
+<div style="margin-top:2px;margin-bottom:5px;display:inline-block">
+  <h3 style="float:left; margin:0">
+    {{title}}
+  </h3>
+  <div style="float:left;margin-left:10px; margin-top:3px">
 
-<table style="float:left;margin-right:3px">
-  <tr>
-    <th style="width: 100px">時間\人</th>
-    <th *ngFor="let p of people">
-      {{p}}
-    </th>
-  </tr>
-  <tr *ngFor="let d of dates">
-    <td style="text-align:center" [ngStyle]="{'border-top-width': d.getDay() === 1 ? '3px' : '1px'}">
-      {{d.toLocaleDateString()}}
-      <br> 星期{{['一','二','三','四','五'][d.getDay()-1]}}
-    </td>
-    <td *ngFor="let a of people" [ngStyle]="{'border-top-width': d.getDay() === 1 ? '3px' : '1px'}">
-      <span type="button" (click)="getInfo(d, a)">
-       <a href="#">{{filterData(d,a)?.M}} </a>
-     </span>
-    </td>
-  </tr>
-</table>
-<!--{{infodata| json}}-->
-<span *ngIf="infodata">
-<b>單筆明細:</b> <br>
- {{"先前金額:"+infodata.bcash}}
- <br >
- <span style="color:red">
- {{"今日消費:"+infodata.pay}}
- </span>
-<br>
-<span style="color:green">
- {{"今日儲值:"+infodata.topUp}}
- </span>
-<br> {{"店家:"+infodata.store}}
-<br> {{"消費內容:"+ infodata.content}}
-<br> {{"消費者:"+ infodata.man}}
-<br> {{"時間:"+infodata.dateAt}}
-<br> {{"目前金額:"+(infodata.bcash +infodata.topUp-infodata.pay )}}
-</span>
+    <a routerLink="/home">首頁</a>
+    <a style="margin-left:3px;" routerLink="/check-manage">帳本管理</a>
+  </div>
+</div>
+<div style="  clear: left;">
+  <router-outlet></router-outlet>
+</div>
