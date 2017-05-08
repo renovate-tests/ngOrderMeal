@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   dates: Date[] = [];
   infodata: any;
   caldata: any;
+  datapoint: any;
 
   constructor() { }
 
@@ -43,12 +44,12 @@ export class HomeComponent implements OnInit {
   filterData(dat: Date, name): any {
     const arr = this.arr as any[];
     const item = arr.find(x => x.man === name && x.dateAt === dat.toLocaleDateString());
-
+    this.datapoint = null;
     if (item != null) {
       const money = item.bcash + item.topUp - item.pay;
-      return { 'M': '$:' + money };
+      this.datapoint = { 'M': '$:' + money, 'topUp': item.topUp };
     }
-    return undefined;
+    return this.datapoint;
   }
 
   /*  取得單筆帳單  */

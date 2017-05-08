@@ -1,3 +1,32 @@
-<p>
-  check-manage works!
-</p>
+<div class="container">
+  <form [formGroup]="form">
+    <div class="profile">
+      <h2>基本資料</h2>
+      <div class="form-group">
+        <label>bcash</label>
+        <input type="text" class="form-control" id="bcash" formControlName="bcash" placeholder="bcash">
+      </div>
+      <div class="form-group">
+        <label>topUp</label>
+        <input type="text" class="form-control" id="topUp" formControlName="topUp" placeholder="topUp">
+      </div>
+      <div class="form-group">
+        <label>pay</label>
+        <input type="text" class="form-control" id="pay" formControlName="pay" placeholder="pay">
+      </div>
+      <div class="form-group">
+        <label>store</label>
+        <input type="text" class="form-control" id="store" formControlName="store" placeholder="store">
+      </div>
+      <div class="form-group">
+        <label>man</label>
+        <input type="text" class="form-control" id="man" formControlName="man" placeholder="man">
+      </div>
+      <div class="form-group">
+        <label>dateAt</label>
+        <input type="text" class="form-control" id="dateAt" formControlName="dateAt" placeholder="dateAt">
+      </div>
+    </div>
+    <button type="submit" (click)="check()" class="btn btn-default">新增</button>
+  </form>
+</div>
