@@ -3,28 +3,32 @@
     <div class="profile">
       <h2>基本資料</h2>
       <div class="form-group">
-        <label>bcash</label>
-        <input type="text" class="form-control" id="bcash" formControlName="bcash" placeholder="bcash">
+        <label>先前儲金</label>
+        <input type="number" class="form-control" id="bcash" formControlName="bcash">
       </div>
       <div class="form-group">
-        <label>topUp</label>
-        <input type="text" class="form-control" id="topUp" formControlName="topUp" placeholder="topUp">
+        <label>加值</label>
+        <input type="number" class="form-control" id="topUp" formControlName="topUp">
       </div>
       <div class="form-group">
-        <label>pay</label>
-        <input type="text" class="form-control" id="pay" formControlName="pay" placeholder="pay">
+        <label>消費</label>
+        <input type="number" class="form-control" id="pay" formControlName="pay">
       </div>
       <div class="form-group">
-        <label>store</label>
-        <input type="text" class="form-control" id="store" formControlName="store" placeholder="store">
+        <label>店家</label>
+        <input type="text" class="form-control" id="store" formControlName="store">
       </div>
       <div class="form-group">
-        <label>man</label>
-        <input type="text" class="form-control" id="man" formControlName="man" placeholder="man">
+        <label>消費內容</label>
+        <input type="text" class="form-control" id="content" formControlName="content">
       </div>
       <div class="form-group">
-        <label>dateAt</label>
-        <input type="text" class="form-control" id="dateAt" formControlName="dateAt" placeholder="dateAt">
+        <label>消費者</label>
+        <input type="text" class="form-control" id="man" formControlName="man">
+      </div>
+      <div class="form-group">
+        <label>時間</label>
+        <input type="text" class="form-control" id="dateAt" formControlName="dateAt">
       </div>
     </div>
     <button type="submit" (click)="check()" class="btn btn-default">新增</button>

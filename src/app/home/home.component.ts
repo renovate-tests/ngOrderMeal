@@ -47,7 +47,9 @@ export class HomeComponent implements OnInit {
     this.datapoint = null;
     if (item != null) {
       const money = item.bcash + item.topUp - item.pay;
-      this.datapoint = { 'M': '$:' + money, 'topUp': item.topUp };
+      this.datapoint = { 'M': '$:' + money,
+                         'topUp': item.topUp,
+                          'pay': item.pay };
     }
     return this.datapoint;
   }

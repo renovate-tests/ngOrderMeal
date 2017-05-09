@@ -1,6 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
+declare global {
+  interface Array<T> {
+    getMinItem(): any;
+  }
+}
+
+Array.prototype.getMinItem = function (): any {
+  return (this as any[]).reduce((x, y) =>
+    new Date(x.dateAt) < new Date(y.dateAt) ? x : y);
+}
+
 @Component({
   selector: 'app-list-firebase',
   templateUrl: './list-firebase.component.html',
@@ -13,9 +24,10 @@ export class ListFirebaseComponent implements OnInit {
   infodata: any;
   caldata: any;
   datapoint: any;
-
-
   items: FirebaseListObservable<any>;
+  // otherdata: Map<string, number>;
+  otherdata: object = {};
+
   constructor(db: AngularFireDatabase) {
     this.items = db.list('/items');
   }
@@ -31,6 +43,13 @@ export class ListFirebaseComponent implements OnInit {
     this.people = arr.map(x => x.man)
       .filter((v, i, a) => a.indexOf(v) === i);
     this.getDates();
+
+    for (const value of this.people) {
+
+      // 尚未完成
+      this.otherdata[value] = arr.getMinItem().bcash;
+      // this.otherdata.set(value, arr.getMinItem().bcash);
+    }
   }
 
   /* 臨時查詢撰寫查詢的時間範圍 */
@@ -52,7 +71,11 @@ export class ListFirebaseComponent implements OnInit {
     this.datapoint = null;
     if (item != null) {
       const money = item.bcash + item.topUp - item.pay;
-      this.datapoint = { 'M': '$:' + money, 'topUp': item.topUp };
+      this.datapoint = {
+        'M': '$:' + money,
+        'topUp': item.topUp,
+        'pay': item.pay
+      };
     }
     return this.datapoint;
   }
@@ -63,8 +86,9 @@ export class ListFirebaseComponent implements OnInit {
     this.caldata = arr.filter(x => x.man === name && new Date(x.dateAt) <= dat);
 
     // 取得查詢範圍內的第一筆資料，保留第一筆先前金額
-    const minDateItem = this.caldata.reduce((x, y) =>
-      new Date(x.dateAt) < new Date(y.dateAt) ? x : y);
+    // const minDateItem = this.caldata.reduce((x, y) =>
+    //   new Date(x.dateAt) < new Date(y.dateAt) ? x : y);
+    const minDateItem = (this.caldata as any[]).getMinItem();
 
     // 當前資料
     this.infodata = this.caldata.find(x => x.dateAt === dat.toLocaleDateString());
@@ -85,5 +109,4 @@ export class ListFirebaseComponent implements OnInit {
     }
     console.groupEnd();
   }
-
 }

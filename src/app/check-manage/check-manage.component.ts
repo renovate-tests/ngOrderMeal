@@ -19,7 +19,8 @@ export class CheckManageComponent implements OnInit {
       pay: 0,
       store: '',
       man: '',
-      dateAt: ''
+      dateAt: '',
+      content: ''
     });
 
     // this.items = db.list('/items');
