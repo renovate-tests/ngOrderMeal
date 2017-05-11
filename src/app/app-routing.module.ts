@@ -10,6 +10,7 @@ const appRoutes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'check-manage', component: CheckManageComponent },
     { path: 'list-firebase', component: ListFirebaseComponent },
+    { path: 'check-manage/:id', component: CheckManageComponent },
     { path: '**', component: HomeComponent }
 ];
 

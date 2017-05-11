@@ -1,23 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef,
+  AfterViewInit, AfterContentInit, OnChanges, SimpleChanges, AfterContentChecked, AfterViewChecked
+} from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { Subscription } from 'rxjs/Subscription';
 
-declare global {
-  interface Array<T> {
-    getMinItem(): any;
-  }
-}
-
-Array.prototype.getMinItem = function (): any {
-  return (this as any[]).reduce((x, y) =>
-    new Date(x.dateAt) < new Date(y.dateAt) ? x : y);
-}
 
 @Component({
   selector: 'app-list-firebase',
   templateUrl: './list-firebase.component.html',
-  styleUrls: ['./list-firebase.component.css']
+  styleUrls: ['./list-firebase.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListFirebaseComponent implements OnInit {
+export class ListFirebaseComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, OnChanges, AfterContentChecked, AfterViewChecked {
+
   arr: any = [];
   people: any[] = [];
   dates: Date[] = [];
@@ -26,14 +22,17 @@ export class ListFirebaseComponent implements OnInit {
   datapoint: any;
   items: FirebaseListObservable<any>;
   // otherdata: Map<string, number>;
-  otherdata: object = {};
+  bcashs: object = {};
+  unstb: Subscription;
 
-  constructor(db: AngularFireDatabase) {
+  constructor(db: AngularFireDatabase, private cdRef: ChangeDetectorRef) {
     this.items = db.list('/items');
+    // this.cdRef.markForCheck();
+
   }
 
   ngOnInit() {
-    this.items.subscribe((x) => {
+    this.unstb = this.items.subscribe((x) => {
       this.arr = x;
       this.Init();
     });
@@ -45,12 +44,34 @@ export class ListFirebaseComponent implements OnInit {
     this.getDates();
 
     for (const value of this.people) {
-
-      // 尚未完成
-      this.otherdata[value] = arr.getMinItem().bcash;
-      // this.otherdata.set(value, arr.getMinItem().bcash);
+      this.bcashs[value] = arr.filter(x => x.man === value).getMinItem().bcash;
     }
+    this.cdRef.markForCheck();
   }
+
+  ngAfterViewInit(): void {
+    // this.cdRef.detach();
+    console.log('list ngafterviewinit');
+  }
+
+  ngAfterContentInit(): void {
+    console.log('list ngAfterContentInit');
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
+
+  ngAfterContentChecked(): void {
+    console.log('list ngAfterContentChecked');
+    // this.cdRef.detectChanges();
+
+  }
+
+  ngAfterViewChecked(): void {
+    console.log('list ngAfterViewChecked');
+    // this.cdRef.detach();
+  }
+
 
   /* 臨時查詢撰寫查詢的時間範圍 */
   getDates(): void {
@@ -66,28 +87,33 @@ export class ListFirebaseComponent implements OnInit {
 
   /*  取得表格目前現金  */
   filterData(dat: Date, name): any {
+    console.log(dat.toLocaleDateString(), name);
+
     const arr = this.arr as any[];
     const item = arr.find(x => x.man === name && x.dateAt === dat.toLocaleDateString());
     this.datapoint = null;
-    if (item != null) {
+    if (item != null && (item.topUp + item.pay > 0)) {
       const money = item.bcash + item.topUp - item.pay;
       this.datapoint = {
         'M': '$:' + money,
         'topUp': item.topUp,
         'pay': item.pay
       };
+      this.bcashs[name] = money;
+    } else {
+      this.datapoint = { 'bcash': this.bcashs[name] };
     }
+    //  this.cdRef.reattach();
     return this.datapoint;
   }
 
   /*  取得單筆帳單  */
   getInfo(dat, name): any {
-    const arr = this.arr as any[];
+    // const arr = this.arr as any[];
+    const arr = JSON.parse(JSON.stringify(this.arr)) as any[];
     this.caldata = arr.filter(x => x.man === name && new Date(x.dateAt) <= dat);
 
     // 取得查詢範圍內的第一筆資料，保留第一筆先前金額
-    // const minDateItem = this.caldata.reduce((x, y) =>
-    //   new Date(x.dateAt) < new Date(y.dateAt) ? x : y);
     const minDateItem = (this.caldata as any[]).getMinItem();
 
     // 當前資料
@@ -108,5 +134,12 @@ export class ListFirebaseComponent implements OnInit {
       this.infodata.bcash = minDateItem.bcash;
     }
     console.groupEnd();
+
+  }
+
+  ngOnDestroy(): void {
+    if (this.unstb !== null) {
+      this.unstb.unsubscribe();
+    }
   }
 }

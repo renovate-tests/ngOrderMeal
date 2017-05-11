@@ -2,7 +2,8 @@
   <tr>
     <th style="width: 100px">時間\人</th>
     <th *ngFor="let p of people">
-      {{p}}
+      <a routerLink="/check-manage/{{p}}">++</a> {{p}}
+      <!--<a routerLink= "['/check-manage', p]">++</a> {{p}}-->
     </th>
   </tr>
   <tr *ngFor="let d of dates">
@@ -11,29 +12,16 @@
       <br> 星期{{['一','二','三','四','五'][d.getDay()-1]}}
     </td>
     <td *ngFor="let a of people" [ngStyle]="{'border-top-width': d.getDay() === 1 ? '3px' : '1px'}">
-      <span *ngIf="filterData(d,a)" (click)="getInfo(d, a)">
+      <span *ngIf="filterData(d,a)?.bcash == null; else elseBlock " (click)="getInfo(d, a)">
         <span class="facklink">{{datapoint?.M}}</span>
-        <i *ngIf="datapoint.topUp > 0" style="margin-left:3px; color: green" class="fa fa-plus-circle" aria-hidden="true"></i>
-        <i *ngIf="datapoint.pay > 0" style="color: red" class="fa fa-minus-circle" aria-hidden="true"></i>
+      <i *ngIf="datapoint?.topUp > 0" style="margin-left:3px; color: green" class="fa fa-plus-circle" aria-hidden="true"></i>
+      <i *ngIf="datapoint?.pay > 0" style="color: red" class="fa fa-minus-circle" aria-hidden="true"></i>
       </span>
+      <template #elseBlock>
+        <span style="color: gray">{{datapoint?.bcash}} </span>
+      </template>
     </td>
   </tr>
 </table>
 <!--{{infodata| json}}-->
-<span *ngIf="infodata">
-<b>單筆明細:</b> <br>
- {{"先前金額:"+infodata.bcash}}
- <br >
- <span style="color:red">
- {{"今日消費:"+infodata.pay}}
- </span>
-<br>
-<span style="color:green">
- {{"今日儲值:"+infodata.topUp}}
- </span>
-<br> {{"店家:"+infodata.store}}
-<br> {{"消費內容:"+ infodata.content}}
-<br> {{"消費者:"+ infodata.man}}
-<br> {{"時間:"+infodata.dateAt}}
-<br> {{"目前金額:"+(infodata.bcash +infodata.topUp-infodata.pay )}}
-</span>
+<app-detail [infodata]="infodata">
