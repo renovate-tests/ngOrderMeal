@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { DetailComponent } from './list-firebase/detail/detail.component';
+import { ViewTableComponent } from './list-firebase/view-table/view-table.component';
 
 
 const firebase = {
@@ -28,7 +29,8 @@ const firebase = {
     HomeComponent,
     CheckManageComponent,
     ListFirebaseComponent,
-    DetailComponent
+    DetailComponent,
+    ViewTableComponent
   ],
   imports: [
     BrowserModule,
