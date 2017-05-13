@@ -1,8 +1,9 @@
 import {
-  Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef
+  Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, NgZone
 } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { Subscription } from 'rxjs/Subscription';
+declare var $: any;
 
 
 @Component({
@@ -19,8 +20,13 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
   items: FirebaseListObservable<any>;
   bcashs: object = {};
   unstb: Subscription;
+  today = new Date().toLocaleDateString();
+  beforeday = 20;
+  months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
 
-  constructor(db: AngularFireDatabase, private cdRef: ChangeDetectorRef) {
+  constructor(db: AngularFireDatabase,
+    private ngZone: NgZone,
+    private cdRef: ChangeDetectorRef) {
     this.items = db.list('/items');
   }
 
@@ -39,14 +45,31 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
     for (const value of this.people) {
       this.bcashs[value] = arr.filter(x => x.man === value).getMinItem().bcash;
     }
+
+    // this.ngZone.run(() => {
+    //   const months = this.months;
+    //   $('#dateAt_css').calendar({
+    //     type: 'date',
+    //     today: true,
+    //     text: {
+    //       days: ['週日', '週一', '週二', '週三', '週四', '週五', '週六'],
+    //       months: months,
+    //       monthsShort: months,
+    //       today: '今天',
+    //       now: 'Now',
+    //       am: 'AM',
+    //       pm: 'PM'
+    //     },
+    //   });
+    // });
   }
 
   /* 臨時查詢撰寫查詢的時間範圍 */
   getDates(): void {
     this.dates = [];
-    for (let index = 0; index < 20; index++) {
-      const dat = new Date('2017-1-1');
-      dat.setDate(dat.getDate() + index);
+    for (let index = 0; index < this.beforeday; index++) {
+      const dat = new Date(this.today);
+      dat.setDate(dat.getDate() - index);
       const week = dat.getDay();
       if (week === 0 || week === 6) { continue; }
       this.dates.push(dat);

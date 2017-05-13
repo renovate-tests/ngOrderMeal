@@ -13,7 +13,6 @@ declare var $: any;
 export class CheckManageComponent implements OnInit {
   form: FormGroup;
   items: FirebaseListObservable<any>;
-  isdatfouce: boolean = true;
   months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
 
   constructor(private _fb: FormBuilder,

@@ -1,9 +1,17 @@
-
-<app-view-table
- [people]="people"
- [dates]="dates"
- [arr]="arr"
- [bcashs]="bcashs"
- (userUpdated)="getInfoData($event)"
- ></app-view-table>
+<div class="ui form">
+    <div class="three fields">
+        <div class="inline field" style="width:250px">
+            <label>時間</label>
+            <input type="date" id="dateAt" [(ngModel)]="today">
+        </div>
+        <div class="inline field" style="width:300px">
+            <label>前幾天</label>
+            <input type="number" min="0" [(ngModel)]="beforeday">
+        </div>
+        <div class="fild">
+            <button type="button" class="ui submit button" (click)="getDates()">查詢</button>
+        </div>
+    </div>
+</div>
+<app-view-table [people]="people" [dates]="dates" [arr]="arr" [bcashs]="bcashs" (userUpdated)="getInfoData($event)"></app-view-table>
 <app-detail [infodata]="infodata">
