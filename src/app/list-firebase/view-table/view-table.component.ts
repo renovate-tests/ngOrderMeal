@@ -8,21 +8,12 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, O
 
 })
 export class ViewTableComponent implements OnInit {
-
-  @Input()
-  people: string[];
-
-  @Input()
-  dates: Date[];
-
-  @Input()
-  arr: any[];
-
-  @Input()
-  bcashs: object;
-
-  datapoint: any;
+  @Input() people: string[];
+  @Input() dates: Date[];
+  @Input() arr: any[];
+  @Input() bcashs: object;
   @Output() userUpdated = new EventEmitter();
+  datapoint: any;
 
   constructor(private cdRef: ChangeDetectorRef) { }
 

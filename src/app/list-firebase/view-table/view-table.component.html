@@ -1,10 +1,7 @@
-<table style="float:left;margin-right:3px">
+<table class="ui celled table" style="float:left;margin-right:3px" [style.width]="(people.length+1)*100 + 'px'">
   <tr>
-    <th style="width: 100px">時間\人</th>
-    <th *ngFor="let p of people">
-      <!--<a routerLink="/check-manage/{{p}}">
-        <i style="color:chartreuse" class="fa fa-plus-square" aria-hidden="true"></i>
-      </a>-->
+    <th style="width: 100px;height:40px;text-align:center">時間\人</th>
+    <th class="single line" style="width:100px;text-align:center" *ngFor="let p of people">
       <i routerLink="/check-manage/{{p}}" style="color:chocolate" class="fa fa-plus-square" aria-hidden="true"></i>
       <span>{{p}}</span>
     </th>

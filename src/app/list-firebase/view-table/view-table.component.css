@@ -1,4 +1,4 @@
-table {
+/*table {
     border-collapse: collapse;
 }
 
@@ -8,7 +8,7 @@ table, th, td {
 td {
     min-width: 70px;
     height: 30px;
-}
+}*/
 
 .facklink {
      cursor:pointer;

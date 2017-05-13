@@ -1,36 +1,53 @@
-<div class="container">
-  <form [formGroup]="form">
+<div class="ui container">
+  <form class="ui form" [formGroup]="form" style="margin: auto;width:50%">
     <div class="profile">
-      <h2>基本資料</h2>
-      <div class="form-group">
+      <h2>輸入資料</h2>
+      <div class="field ">
         <label>先前儲金</label>
-        <input type="number" class="form-control" id="bcash" formControlName="bcash">
+        <div class="ui disabled input">
+          <input type="number" id="bcash" formControlName="bcash">
+        </div>
       </div>
-      <div class="form-group">
-        <label>加值</label>
-        <input type="number" class="form-control" id="topUp" formControlName="topUp">
+      <div class="two fields">
+        <div class=" field">
+          <label>加值</label>
+          <input type="number" id="topUp" formControlName="topUp" min="0">
+        </div>
+        <div class="field">
+          <label>消費</label>
+          <input type="number" id="pay" formControlName="pay" min="0">
+        </div>
       </div>
-      <div class="form-group">
-        <label>消費</label>
-        <input type="number" class="form-control" id="pay" formControlName="pay">
+      <div style="margin-top:-1em;margin-bottom:0.2em" [ngStyle]="{'visibility':(form.value.topUp + form.value.pay) === 0? null:'hidden'}">
+        <span style="color:red">加值或消費其中一項必填</span>
       </div>
-      <div class="form-group">
+      <div class="field">
         <label>店家</label>
-        <input type="text" class="form-control" id="store" formControlName="store">
+        <input type="text" id="store" formControlName="store">
       </div>
-      <div class="form-group">
+      <div class="field">
         <label>消費內容</label>
-        <input type="text" class="form-control" id="content" formControlName="content">
+        <textarea id="content" style=" resize: none;" formControlName="content" rows="5"></textarea>
       </div>
-      <div class="form-group">
+      <div class="field">
         <label>消費者</label>
-        <input type="text" class="form-control" id="man" formControlName="man">
+        <input type="text" id="man" formControlName="man">
       </div>
-      <div class="form-group">
+      <div class="field">
         <label>時間</label>
-        <input type="text" class="form-control" id="dateAt" formControlName="dateAt">
+        <div class="ui calendar" id="dateAt_css">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <!--<input type="text" class="ui disabled input" id="dateAt" formControlName="dateAt">-->
+            <input type="text" id="dateAt" formControlName="dateAt">
+          </div>
+        </div>
+        <div [ngStyle]="{'visibility':form.controls.dateAt.errors?.required ? null:'hidden'}">
+          <span style="color:red">必填項目</span>
+        </div>
       </div>
     </div>
-    <button type="submit" (click)="check()" class="btn btn-default">新增</button>
+    <button [ngClass]="{'disabled' : form.invalid || (form.value.topUp + form.value.pay) === 0}" style="margin-top:10px" (click)="check()"
+      class="ui submit button">送出</button>
   </form>
 </div>
