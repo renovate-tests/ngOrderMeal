@@ -14,7 +14,7 @@ declare var $: any;
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class ListFirebaseComponent implements OnInit, OnDestroy {
-  arr: any = [];
+  arr: any[] = [];
   people: any[] = [];
   dates: Date[] = [];
   infodata: any;
@@ -49,7 +49,7 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
     });
   }
   Init() {
-    const arr = this.arr as any[];
+    const arr = this.arr;
     this.people = arr.map(x => x.man)
       .filter((v, i, a) => a.indexOf(v) === i);
     this.getDates();
