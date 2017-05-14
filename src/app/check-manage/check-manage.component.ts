@@ -13,7 +13,6 @@ declare var $: any;
 export class CheckManageComponent implements OnInit {
   form: FormGroup;
   items: FirebaseListObservable<any>;
-  months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
 
   constructor(private _fb: FormBuilder,
     private db: AngularFireDatabase,
@@ -39,7 +38,6 @@ export class CheckManageComponent implements OnInit {
       this.Init(x);
       console.log(x);
     });
-
   }
 
   Init(x) {
@@ -50,43 +48,6 @@ export class CheckManageComponent implements OnInit {
       const maxItem = y.filter(z => z.man === x.id).getMaxItem();
       this.form.patchValue({ bcash: maxItem.bcash + maxItem.topUp - maxItem.pay });
     });
-
-
-    this.ngZone.run(() => {
-      const form = this.form;
-      const months = this.months;
-      $('#dateAt_css').calendar({
-        type: 'date',
-        today: true,
-        initialDate: null,
-        onChange: function (date, text, mode) {
-          form.patchValue({ dateAt: date === undefined ? null : (date as Date).toLocaleDateString() });
-          // return date !== undefined;
-        },
-        date: function (date, settings) {
-        },
-        parser: {
-          date: function (text, settings) {
-          }
-        },
-        text: {
-          days: ['週日', '週一', '週二', '週三', '週四', '週五', '週六'],
-          months: months,
-          monthsShort: months,
-          today: '今天',
-          now: 'Now',
-          am: 'AM',
-          pm: 'PM'
-        },
-        popupOptions: {
-          position: 'bottom left',
-          lastResort: 'bottom left',
-          prefer: 'opposite',
-          hideOnScroll: false
-        },
-      });
-    });
-
   }
 
   check() {

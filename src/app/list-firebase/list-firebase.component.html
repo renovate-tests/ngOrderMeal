@@ -1,8 +1,15 @@
 <div class="ui form">
     <div class="three fields">
-        <div class="inline field" style="width:250px">
-            <label>時間</label>
-            <input type="date" id="dateAt" [(ngModel)]="today">
+        <div class="inline field" style="width:350px">
+            <!--<label>時間</label>-->
+            <!--<input type="date" id="dateAt" [(ngModel)]="today">-->
+
+            <div class="ui calendar" id="dateAt_css" appDatePicker (outputDate)="today = $event">
+                <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" style="width:300px" id="dateAt" [ngModel]="today.toLocaleDateString()">
+                </div>
+            </div>
         </div>
         <div class="inline field" style="width:300px">
             <label>前幾天</label>
@@ -12,6 +19,8 @@
             <button type="button" class="ui submit button" (click)="getDates()">查詢</button>
         </div>
     </div>
+
+
 </div>
 <app-view-table [people]="people" [dates]="dates" [arr]="arr" [bcashs]="bcashs" (userUpdated)="getInfoData($event)"></app-view-table>
 <app-detail [infodata]="infodata">

@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 declare var $: any;
 
 
@@ -20,17 +21,28 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
   items: FirebaseListObservable<any>;
   bcashs: object = {};
   unstb: Subscription;
-  today = new Date().toLocaleDateString();
+  today; Date;
   beforeday = 20;
-  months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+  // sizeSubject: Subject<any>;
 
   constructor(db: AngularFireDatabase,
     private ngZone: NgZone,
     private cdRef: ChangeDetectorRef) {
+
+    // this.sizeSubject = new Subject();
     this.items = db.list('/items');
+    // this.items = db.list('/items', {
+    //   query: {
+    //     orderByChild: 'man',
+    //     equalTo: this.sizeSubject,
+    //   }
+    // });
   }
 
   ngOnInit() {
+    this.today = new Date();
+    // this.sizeSubject.next('王xx');
+    // this.sizeSubject.next('賢麟');
     this.unstb = this.items.subscribe((x) => {
       this.arr = x;
       this.Init();
@@ -45,34 +57,19 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
     for (const value of this.people) {
       this.bcashs[value] = arr.filter(x => x.man === value).getMinItem().bcash;
     }
-
-    // this.ngZone.run(() => {
-    //   const months = this.months;
-    //   $('#dateAt_css').calendar({
-    //     type: 'date',
-    //     today: true,
-    //     text: {
-    //       days: ['週日', '週一', '週二', '週三', '週四', '週五', '週六'],
-    //       months: months,
-    //       monthsShort: months,
-    //       today: '今天',
-    //       now: 'Now',
-    //       am: 'AM',
-    //       pm: 'PM'
-    //     },
-    //   });
-    // });
   }
 
   /* 臨時查詢撰寫查詢的時間範圍 */
   getDates(): void {
     this.dates = [];
     for (let index = 0; index < this.beforeday; index++) {
-      const dat = new Date(this.today);
+      let dat: Date;
+      dat = new Date(this.today);
       dat.setDate(dat.getDate() - index);
       const week = dat.getDay();
       if (week === 0 || week === 6) { continue; }
       this.dates.push(dat);
+      // this.cdRef.reattach();
     }
   }
 

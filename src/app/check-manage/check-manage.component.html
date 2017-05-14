@@ -35,7 +35,9 @@
       </div>
       <div class="field">
         <label>時間</label>
-        <div class="ui calendar" id="dateAt_css">
+        <!--<div class="ui calendar" id="dateAt_css" appDatePicker  [form]="form" formDateName="dateAt">-->
+        <div class="ui calendar" id="dateAt_css" appDatePicker
+         (outputDate)="form.patchValue({ dateAt: $event?.toLocaleDateString() })">
           <div class="ui input left icon">
             <i class="calendar icon"></i>
             <!--<input type="text" class="ui disabled input" id="dateAt" formControlName="dateAt">-->

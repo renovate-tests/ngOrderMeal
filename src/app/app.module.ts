@@ -12,6 +12,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { DetailComponent } from './list-firebase/detail/detail.component';
 import { ViewTableComponent } from './list-firebase/view-table/view-table.component';
+import { DatePickerDirective } from './directive/date-picker.directive';
 
 
 const firebase = {
@@ -30,7 +31,8 @@ const firebase = {
     CheckManageComponent,
     ListFirebaseComponent,
     DetailComponent,
-    ViewTableComponent
+    ViewTableComponent,
+    DatePickerDirective
   ],
   imports: [
     BrowserModule,
