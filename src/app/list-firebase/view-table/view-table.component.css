@@ -1,14 +1,6 @@
-/*table {
-    border-collapse: collapse;
+.icon {
+    margin: 0;
 }
-
-table, th, td {
-    border: 1px solid black;
-}
-td {
-    min-width: 70px;
-    height: 30px;
-}*/
 
 .facklink {
      cursor:pointer;

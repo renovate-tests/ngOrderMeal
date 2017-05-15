@@ -2,21 +2,24 @@
   <tr>
     <th style="width: 140px;height:40px;text-align:center">時間\人</th>
     <th class="single line" style="width:100px;text-align:center" *ngFor="let p of people">
-      <i routerLink="/check-manage/{{p}}" style="color:chocolate" class="fa fa-plus-square" aria-hidden="true"></i>
+      <i *ngIf="permission.insert" routerLink="/check-manage/{{p}}" style="color:chocolate" class="add square icon" aria-hidden="true"></i>
       <span>{{p}}</span>
     </th>
   </tr>
   <tr *ngFor="let d of dates">
-    <td style="text-align:center" [ngStyle]="{'border-top-width': d.getDay() === 1 ? '3px' : '1px'}">
+    <td style="text-align:center" [ngStyle]="{'border-top-width': d.getDay() === 5 ? '3px' : '1px'}">
       {{d.toLocaleDateString()}}
       <!--<br>-->
       週{{['一','二','三','四','五'][d.getDay()-1]}}
     </td>
-    <td *ngFor="let a of people" [ngStyle]="{'border-top-width': d.getDay() === 1 ? '3px' : '1px'}">
+    <td *ngFor="let a of people" [ngStyle]="{'border-top-width': d.getDay() === 5 ? '3px' : '1px'}">
       <span *ngIf="filterData(d,a)?.bcash == null; else elseBlock " (click)="getInfo(d, a)">
+        <span *ngIf="permission.update && (datapoint?.topUp + datapoint?.pay) > 0">
+          <i routerLink="/check-manage/{{a}}" class="edit icon"></i><br>
+        </span>
         <span class="facklink">{{datapoint?.M}}</span>
-      <i *ngIf="datapoint?.topUp > 0" style="margin-left:3px; color: green" class="fa fa-plus-circle" aria-hidden="true"></i>
-      <i *ngIf="datapoint?.pay > 0" style="color: red" class="fa fa-minus-circle" aria-hidden="true"></i>
+        <i *ngIf="datapoint?.topUp > 0" style="margin-left:1px; color: green" class="add circle icon" aria-hidden="true"></i>
+        <i *ngIf="datapoint?.pay > 0" style="color: red" class="minus circle icon" aria-hidden="true"></i>
       </span>
       <template #elseBlock>
         <span style="color: gray">{{datapoint?.bcash}} </span>

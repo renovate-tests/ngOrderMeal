@@ -23,6 +23,7 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
   unstb: Subscription;
   today; Date;
   beforeday = 20;
+  permission = { insert: true, update: false, delete: false };
   // sizeSubject: Subject<any>;
 
   constructor(db: AngularFireDatabase,
@@ -69,8 +70,8 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
       const week = dat.getDay();
       if (week === 0 || week === 6) { continue; }
       this.dates.push(dat);
-      // this.cdRef.reattach();
     }
+    // this.cdRef.reattach();
   }
 
   ngOnDestroy(): void {

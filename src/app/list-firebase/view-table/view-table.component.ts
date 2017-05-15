@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-view-table',
@@ -7,17 +7,28 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, O
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class ViewTableComponent implements OnInit {
+export class ViewTableComponent implements OnInit, OnChanges {
   @Input() people: string[];
   @Input() dates: Date[];
   @Input() arr: any[];
   @Input() bcashs: object;
+  @Input() permission = { insert: false, update: false, delete: false };
   @Output() userUpdated = new EventEmitter();
   datapoint: any;
 
   constructor(private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes) {
+        this.cdRef.reattach();
+      // if (changes['permission']) {
+      //   this.cdRef.detach();
+      // } else {
+      // }
+    }
+    console.log(changes);
   }
 
   filterData(dat: Date, name): any {

@@ -42,7 +42,6 @@ export class CheckManageComponent implements OnInit {
 
   Init(x) {
     this.form.patchValue({ man: x.id });
-    // this.form.patchValue({ dateAt: new Date().toLocaleDateString() });
     const itemObservable = this.db.list('/items');
     itemObservable.subscribe(y => {
       const maxItem = y.filter(z => z.man === x.id).getMaxItem();
