@@ -13,6 +13,7 @@ declare var $: any;
 export class CheckManageComponent implements OnInit {
   form: FormGroup;
   items: FirebaseListObservable<any>;
+  queryObj: Params;
 
   constructor(private _fb: FormBuilder,
     private db: AngularFireDatabase,
@@ -34,17 +35,37 @@ export class CheckManageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(x => {
-      this.Init(x);
+    this.route.queryParams.subscribe(x => {
+      if (x && Object.keys(x).length > 0) {
+        if (x.dateAt) {
+          this.Update(x);
+        } else {
+          this.Insert(x);
+        }
+      } else {
+      }
+      this.queryObj = x;
       console.log(x);
     });
   }
 
-  Init(x) {
-    this.form.patchValue({ man: x.id });
-    const itemObservable = this.db.list('/items');
+  Insert(x) {
+    this.form.patchValue({ man: x.man });
+    const itemObservable = this.db.list('/items', { query: { orderByChild: 'man', equalTo: x.man } });
     itemObservable.subscribe(y => {
-      const maxItem = y.filter(z => z.man === x.id).getMaxItem();
+      const maxItem = y.getMaxItem();
+      // const maxItem = y.filter(z => z.man === x.man).getMaxItem();
+      this.form.patchValue({ bcash: maxItem.bcash + maxItem.topUp - maxItem.pay });
+    });
+  }
+
+  Update(x) {
+    this.form.patchValue({ man: x.man });
+    this.form.patchValue({ dateAt: x.dateAt });
+    const itemObservable = this.db.list('/items', { query: { orderByChild: 'man', equalTo: x.man } });
+    itemObservable.subscribe(y => {
+      // const maxItem = y.find(z => z.man === x.man && Date.parse(z.dateAt) === Date.parse(x.dateAt));
+      const maxItem = y.find(z => Date.parse(z.dateAt) === Date.parse(x.dateAt));
       this.form.patchValue({ bcash: maxItem.bcash + maxItem.topUp - maxItem.pay });
     });
   }

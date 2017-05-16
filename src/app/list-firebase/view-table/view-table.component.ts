@@ -1,3 +1,4 @@
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
@@ -16,13 +17,13 @@ export class ViewTableComponent implements OnInit, OnChanges {
   @Output() userUpdated = new EventEmitter();
   datapoint: any;
 
-  constructor(private cdRef: ChangeDetectorRef) { }
+  constructor(private cdRef: ChangeDetectorRef, private db: AngularFireDatabase) { }
 
   ngOnInit() {
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
-        this.cdRef.reattach();
+      this.cdRef.reattach();
       // if (changes['permission']) {
       //   this.cdRef.detach();
       // } else {
@@ -41,7 +42,8 @@ export class ViewTableComponent implements OnInit, OnChanges {
       this.datapoint = {
         'M': '$:' + money,
         'topUp': item.topUp,
-        'pay': item.pay
+        'pay': item.pay,
+        'key': item.$key
       };
       this.bcashs[name] = money;
     } else {
@@ -78,6 +80,12 @@ export class ViewTableComponent implements OnInit, OnChanges {
     console.groupEnd();
     this.userUpdated.emit(infodata);
     this.cdRef.detach();
+  }
+
+  DeleteItem(key: any) {
+    if (key != null && key !== '') {
+      this.db.list('/items').remove(key);
+    }
   }
 
 }

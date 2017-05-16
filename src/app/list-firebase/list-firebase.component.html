@@ -19,15 +19,15 @@
     </div>
     <div class="field" style="margin-bottom:1em">
         <div class="ui checkbox" style="margin-right:1em">
-            <input type="checkbox" [checked]="permission.insert" (change)="permission = {insert: !permission.insert,update: permission.update, delete:permission.delete}">
+            <input type="checkbox" [checked]="permission.insert" (change)="permission = {insert: !permission.insert, update: permission.update, delete:permission.delete}">
             <label>新增</label>
         </div>
         <div class="ui checkbox" style="margin-right:1em">
-            <input type="checkbox" [checked]="permission.update" (change)="permission = {insert: permission.insert,update: !permission.update, delete:permission.delete}">
+            <input type="checkbox" [checked]="permission.update" (change)="permission = {insert: permission.insert, update: !permission.update, delete:permission.delete}">
             <label>修改</label>
         </div>
         <div class="ui checkbox">
-            <input type="checkbox" disabled="disabled">
+            <input type="checkbox" [checked]="permission.update" (change)="permission = {insert: permission.insert, update: permission.update, delete:!permission.delete}">
             <label>刪除</label>
         </div>
     </div>

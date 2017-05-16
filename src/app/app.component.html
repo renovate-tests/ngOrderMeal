@@ -5,6 +5,9 @@
   <a class="item" style="width: 9em" routerLink="/list-firebase" routerLinkActive="active" #rla1="routerLinkActive">
   訂餐帳本<i *ngIf="rla1.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
   </a>
+  <a class="item" style="width: 6.5em" routerLink="/check-manage" routerLinkActive="active" #rla2="routerLinkActive">
+  新增<i *ngIf="rla2.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
+  </a>
 </div>
 <div class="ui segment" style="height:100%">
   <router-outlet></router-outlet>

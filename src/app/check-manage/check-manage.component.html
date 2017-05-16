@@ -2,6 +2,27 @@
   <form class="ui form" [formGroup]="form" style="margin: auto;width:50%">
     <div class="profile">
       <h2>輸入資料</h2>
+
+      <div class="field">
+        <label>消費者</label>
+        <div class="ui input" [ngClass]="{'disabled' : queryObj.man }">
+          <input type="text" id="man" formControlName="man">
+        </div>
+      </div>
+      <div class="field">
+        <label>時間</label>
+        <div class="ui input" [ngClass]="{'disabled' : queryObj.dateAt }">
+          <div class="ui calendar" id="dateAt_css" style="width:100%" appDatePicker (outputDate)="form.patchValue({ dateAt: $event?.toLocaleDateString() })">
+            <div class="ui input left icon">
+              <i class="calendar icon"></i>
+              <input type="text" id="dateAt" formControlName="dateAt">
+            </div>
+          </div>
+        </div>
+        <div [ngStyle]="{'visibility':form.controls.dateAt.errors?.required ? null:'hidden'}">
+          <span style="color:red">必填項目</span>
+        </div>
+      </div>
       <div class="field ">
         <label>先前儲金</label>
         <div class="ui disabled input">
@@ -29,25 +50,8 @@
         <label>消費內容</label>
         <textarea id="content" style=" resize: none;" formControlName="content" rows="5"></textarea>
       </div>
-      <div class="field">
-        <label>消費者</label>
-        <input type="text" id="man" formControlName="man">
-      </div>
-      <div class="field">
-        <label>時間</label>
-        <!--<div class="ui calendar" id="dateAt_css" appDatePicker  [form]="form" formDateName="dateAt">-->
-        <div class="ui calendar" id="dateAt_css" appDatePicker
-         (outputDate)="form.patchValue({ dateAt: $event?.toLocaleDateString() })">
-          <div class="ui input left icon">
-            <i class="calendar icon"></i>
-            <!--<input type="text" class="ui disabled input" id="dateAt" formControlName="dateAt">-->
-            <input type="text" id="dateAt" formControlName="dateAt">
-          </div>
-        </div>
-        <div [ngStyle]="{'visibility':form.controls.dateAt.errors?.required ? null:'hidden'}">
-          <span style="color:red">必填項目</span>
-        </div>
-      </div>
+
+
     </div>
     <button [ngClass]="{'disabled' : form.invalid || (form.value.topUp + form.value.pay) === 0}" style="margin-top:10px" (click)="check()"
       class="ui submit button">送出</button>
