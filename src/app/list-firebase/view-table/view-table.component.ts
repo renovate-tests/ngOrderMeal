@@ -14,6 +14,7 @@ export class ViewTableComponent implements OnInit, OnChanges {
   @Input() arr: any[];
   @Input() bcashs: object;
   @Input() permission = { insert: false, update: false, delete: false };
+  @Input() isDetail = false;
   @Output() userUpdated = new EventEmitter();
   datapoint: any;
 
@@ -45,7 +46,7 @@ export class ViewTableComponent implements OnInit, OnChanges {
         'pay': item.pay,
         'key': item.$key
       };
-      this.bcashs[name] = money;
+      this.bcashs[name] =  item.bcash;
     } else {
       this.datapoint = { 'bcash': this.bcashs[name] };
     }

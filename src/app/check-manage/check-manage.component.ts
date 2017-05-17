@@ -54,7 +54,6 @@ export class CheckManageComponent implements OnInit {
     const itemObservable = this.db.list('/items', { query: { orderByChild: 'man', equalTo: x.man } });
     itemObservable.subscribe(y => {
       const maxItem = y.getMaxItem();
-      // const maxItem = y.filter(z => z.man === x.man).getMaxItem();
       this.form.patchValue({ bcash: maxItem.bcash + maxItem.topUp - maxItem.pay });
     });
   }
@@ -64,9 +63,8 @@ export class CheckManageComponent implements OnInit {
     this.form.patchValue({ dateAt: x.dateAt });
     const itemObservable = this.db.list('/items', { query: { orderByChild: 'man', equalTo: x.man } });
     itemObservable.subscribe(y => {
-      // const maxItem = y.find(z => z.man === x.man && Date.parse(z.dateAt) === Date.parse(x.dateAt));
       const maxItem = y.find(z => Date.parse(z.dateAt) === Date.parse(x.dateAt));
-      this.form.patchValue({ bcash: maxItem.bcash + maxItem.topUp - maxItem.pay });
+      this.form.patchValue({ bcash: maxItem.bcash });
     });
   }
 

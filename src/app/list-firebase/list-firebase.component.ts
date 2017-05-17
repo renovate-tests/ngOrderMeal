@@ -21,9 +21,11 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
   items: FirebaseListObservable<any>;
   bcashs: object = {};
   unstb: Subscription;
-  today; Date;
+  today: Date;
+  today1: Date;
   beforeday = 20;
   permission = { insert: true, update: false, delete: false };
+  isDetail = false;
   // sizeSubject: Subject<any>;
 
   constructor(db: AngularFireDatabase,
@@ -47,6 +49,7 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
     this.unstb = this.items.subscribe((x) => {
       this.arr = x;
       this.Init();
+
     });
   }
   Init() {
@@ -56,16 +59,19 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
     this.getDates();
 
     for (const value of this.people) {
-      this.bcashs[value] = arr.filter(x => x.man === value).getMinItem().bcash;
+      const item = arr.filter(x => x.man === value).getMaxItem();
+      this.bcashs[value] = item.bcash + item.topUp - item.pay;
+      // console.log(this.bcashs);
     }
   }
 
   /* 臨時查詢撰寫查詢的時間範圍 */
   getDates(): void {
+
     this.dates = [];
     for (let index = 0; index < this.beforeday; index++) {
       let dat: Date;
-      dat = new Date(this.today);
+      dat = new Date(this.today.toDateString());
       dat.setDate(dat.getDate() - index);
       const week = dat.getDay();
       if (week === 0 || week === 6) { continue; }
