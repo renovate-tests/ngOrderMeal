@@ -37,5 +37,5 @@
     </div>
 </div>
 <app-view-table [people]="people" [dates]="dates" [arr]="arr" [bcashs]="bcashs" [permission]="permission" [isDetail]="isDetail"
-    (userUpdated)="getInfoData($event)"></app-view-table>
+    (userUpdated)="infodata = $event"></app-view-table>
 <app-detail [infodata]="infodata">

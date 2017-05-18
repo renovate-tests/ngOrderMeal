@@ -57,12 +57,6 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
     this.people = arr.map(x => x.man)
       .filter((v, i, a) => a.indexOf(v) === i);
     this.getDates();
-
-    for (const value of this.people) {
-      const item = arr.filter(x => x.man === value).getMaxItem();
-      this.bcashs[value] = item.bcash + item.topUp - item.pay;
-      // console.log(this.bcashs);
-    }
   }
 
   /* 臨時查詢撰寫查詢的時間範圍 */
@@ -84,9 +78,5 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
     if (this.unstb !== null) {
       this.unstb.unsubscribe();
     }
-  }
-
-  getInfoData(infodata) {
-    this.infodata = infodata;
   }
 }

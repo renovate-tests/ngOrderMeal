@@ -29,8 +29,16 @@ export class ViewTableComponent implements OnInit, OnChanges {
       //   this.cdRef.detach();
       // } else {
       // }
+      this.getBcashs();
     }
     console.log(changes);
+  }
+
+  getBcashs() {
+    for (const value of this.people) {
+      const item = this.arr.filter(x => x.man === value).getMaxItem();
+      this.bcashs[value] = item.bcash + item.topUp - item.pay;
+    }
   }
 
   filterData(dat: Date, name): any {
@@ -46,7 +54,7 @@ export class ViewTableComponent implements OnInit, OnChanges {
         'pay': item.pay,
         'key': item.$key
       };
-      this.bcashs[name] =  item.bcash;
+      this.bcashs[name] = item.bcash;
     } else {
       this.datapoint = { 'bcash': this.bcashs[name] };
     }
