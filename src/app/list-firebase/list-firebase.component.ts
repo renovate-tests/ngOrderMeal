@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 declare var $: any;
 
-
 @Component({
   selector: 'app-list-firebase',
   templateUrl: './list-firebase.component.html',
@@ -19,20 +18,19 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
   dates: Date[] = [];
   infodata: any;
   items: FirebaseListObservable<any>;
-  bcashs: object = {};
   unstb: Subscription;
   today: Date;
   today1: Date;
   beforeday = 20;
   permission = { insert: true, update: false, delete: false };
   isDetail = false;
-  // sizeSubject: Subject<any>;
+  sizeSubject: Subject<any>;
 
   constructor(db: AngularFireDatabase,
     private ngZone: NgZone,
     private cdRef: ChangeDetectorRef) {
 
-    // this.sizeSubject = new Subject();
+    this.sizeSubject = new Subject();
     this.items = db.list('/items');
     // this.items = db.list('/items', {
     //   query: {
@@ -45,12 +43,14 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.today = new Date();
     // this.sizeSubject.next('王xx');
-    // this.sizeSubject.next('賢麟');
     this.unstb = this.items.subscribe((x) => {
       this.arr = x;
+      // this.arr.push(x);
       this.Init();
 
     });
+    // this.sizeSubject.next('賢麟');
+    // this.sizeSubject.next('路人甲');
   }
   Init() {
     const arr = this.arr;

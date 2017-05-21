@@ -12,11 +12,11 @@ export class ViewTableComponent implements OnInit, OnChanges {
   @Input() people: string[];
   @Input() dates: Date[];
   @Input() arr: any[];
-  @Input() bcashs: object;
   @Input() permission = { insert: false, update: false, delete: false };
   @Input() isDetail = false;
   @Output() userUpdated = new EventEmitter();
   datapoint: any;
+  bcashs = {};
 
   constructor(private cdRef: ChangeDetectorRef, private db: AngularFireDatabase) { }
 
@@ -63,8 +63,7 @@ export class ViewTableComponent implements OnInit, OnChanges {
 
   /*  取得單筆帳單  */
   getInfo(dat, name): any {
-    const arr = JSON.parse(JSON.stringify(this.arr)) as any[];
-    let caldata = arr.filter(x => x.man === name && new Date(x.dateAt) <= dat);
+    let caldata = this.arr.filter(x => x.man === name && new Date(x.dateAt) <= dat);
 
     // 取得查詢範圍內的第一筆資料，保留第一筆先前金額
     const minDateItem = (caldata as any[]).getMinItem();
@@ -96,5 +95,4 @@ export class ViewTableComponent implements OnInit, OnChanges {
       this.db.list('/items').remove(key);
     }
   }
-
 }

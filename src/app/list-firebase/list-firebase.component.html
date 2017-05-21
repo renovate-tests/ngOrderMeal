@@ -26,7 +26,7 @@
             <input type="checkbox" [checked]="permission.update" (change)="permission = {insert: permission.insert, update: !permission.update, delete:permission.delete}">
             <label>修改</label>
         </div>
-        <div class="ui checkbox"  style="margin-right:1em">
+        <div class="ui checkbox" style="margin-right:1em">
             <input type="checkbox" [checked]="permission.delete" (change)="permission = {insert: permission.insert, update: permission.update, delete:!permission.delete}">
             <label>刪除</label>
         </div>
@@ -36,6 +36,5 @@
         </div>
     </div>
 </div>
-<app-view-table [people]="people" [dates]="dates" [arr]="arr" [bcashs]="bcashs" [permission]="permission" [isDetail]="isDetail"
-    (userUpdated)="infodata = $event"></app-view-table>
+<app-view-table [people]="people" [dates]="dates" [arr]="arr" [permission]="permission" [isDetail]="isDetail" (userUpdated)="infodata = $event"></app-view-table>
 <app-detail [infodata]="infodata">

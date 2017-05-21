@@ -2,12 +2,11 @@
   <tr>
     <th style="width: 140px;height:40px;text-align:center">時間\人</th>
     <th class="single line" style="width:100px;text-align:center" *ngFor="let p of people">
-      <i *ngIf="permission.insert" routerLink="/check-manage" [queryParams]="{man:p}" style="color:chocolate" class="add square icon"
-      ></i>
+      <i *ngIf="permission.insert" routerLink="/check-manage" [queryParams]="{man:p}" style="color:chocolate" class="add square icon"></i>
       <span>{{p}}</span>
     </th>
   </tr>
-  <tr *ngFor="let d of dates">
+  <tr *ngFor="let d of dates;">
     <td style="text-align:center" [ngStyle]="{'border-top-width': d.getDay() === 5 ? '3px' : '1px'}">
       {{d.toLocaleDateString()}} 週{{['一','二','三','四','五'][d.getDay()-1]}}
     </td>
@@ -18,12 +17,12 @@
         <span *ngIf="permission.update && (datapoint?.topUp + datapoint?.pay) > 0">
           <i routerLink="/check-manage" [queryParams]="{man: a, dateAt:d.toLocaleDateString(), key:datapoint?.key}" class="edit icon"></i><br>
         </span>
-        <!--刪除 icon-->
-        <span *ngIf="permission.delete && (datapoint?.topUp + datapoint?.pay) > 0">
+      <!--刪除 icon-->
+      <span *ngIf="permission.delete && (datapoint?.topUp + datapoint?.pay) > 0">
           <i (click)="DeleteItem(delItem.title)" class="remove icon" [title]="datapoint?.key" #delItem></i><br>
         </span>
-        <span class="facklink">{{datapoint?.M}}</span>
-        <span *ngIf="isDetail; else elseBlock1">
+      <span class="facklink">{{datapoint?.M}}</span>
+      <span *ngIf="isDetail; else elseBlock1">
           <!--儲值-->
           <br *ngIf="datapoint?.topUp > 0">
           <i *ngIf="datapoint?.topUp > 0" style="margin-left:1px; color: green" class="add circle icon">{{datapoint?.topUp}}</i>
@@ -31,16 +30,16 @@
           <br *ngIf="datapoint?.pay > 0">
           <i *ngIf="datapoint?.pay > 0" style="color: red" class="minus circle icon">{{datapoint?.pay}}</i>
         </span>
-        <template #elseBlock1>
-          <!--儲值-->
-          <i *ngIf="datapoint?.topUp > 0" style="margin-left:1px; color: green" class="add circle icon"></i>
-          <!--消費-->
-          <i *ngIf="datapoint?.pay > 0" style="color: red" class="minus circle icon"></i>
-        </template>
+      <ng-template #elseBlock1>
+        <!--儲值-->
+        <i *ngIf="datapoint?.topUp > 0" style="margin-left:1px; color: green" class="add circle icon"></i>
+        <!--消費-->
+        <i *ngIf="datapoint?.pay > 0" style="color: red" class="minus circle icon"></i>
+      </ng-template>
       </span>
-      <template #elseBlock>
+      <ng-template #elseBlock>
         <span style="color: gray">{{datapoint?.bcash}} </span>
-      </template>
+      </ng-template>
     </td>
   </tr>
 </table>

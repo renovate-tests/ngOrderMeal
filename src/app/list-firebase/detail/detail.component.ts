@@ -1,6 +1,7 @@
 import {
-  Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef
+  Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges, SimpleChanges
 } from '@angular/core';
+import { Method } from 'app/lib/method';
 
 
 @Component({
@@ -9,7 +10,8 @@ import {
   styleUrls: ['./detail.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnChanges {
+
   @Input()
   infodata: any;
 
@@ -17,5 +19,18 @@ export class DetailComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // console.log(this.infodata ? this.infodata.$key : 'no key');
+  }
+
+  getDateTime() {
+    if (this.infodata && this.infodata.$key) {
+      const dat = Method.GetFirebaseKeyTime(this.infodata.$key);
+      return dat.toLocaleDateString() + ' ' + dat.toLocaleTimeString();
+    }
+    return '';
+
   }
 }
