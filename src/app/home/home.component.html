@@ -1,39 +1,26 @@
-<table style="float:left;margin-right:3px">
-  <tr>
-    <th style="width: 100px">時間\人</th>
-    <th *ngFor="let p of people">
-      {{p}}
-    </th>
-  </tr>
-  <tr *ngFor="let d of dates">
-    <td style="text-align:center" [ngStyle]="{'border-top-width': d.getDay() === 1 ? '3px' : '1px'}">
-      {{d.toLocaleDateString()}}
-      <br> 星期{{['一','二','三','四','五'][d.getDay()-1]}}
-    </td>
-    <td *ngFor="let a of people" [ngStyle]="{'border-top-width': d.getDay() === 1 ? '3px' : '1px'}">
-      <span *ngIf="filterData(d,a)" (click)="getInfo(d, a)">
-        <span class="facklink">{{datapoint?.M}}</span>
-        <i *ngIf="datapoint.topUp > 0" style="margin-left:3px; color: green" class="fa fa-plus-circle" aria-hidden="true"></i>
-        <i *ngIf="datapoint.pay > 0" style="color: red" class="fa fa-minus-circle" aria-hidden="true"></i>
-      </span>
-    </td>
-  </tr>
-</table>
-<!--{{infodata| json}}-->
-<span *ngIf="infodata">
-<b>單筆明細:</b> <br>
- {{"先前金額:"+infodata.bcash}}
- <br >
- <span style="color:red">
- {{"今日消費:"+infodata.pay}}
- </span>
-<br>
-<span style="color:green">
- {{"今日儲值:"+infodata.topUp}}
- </span>
-<br> {{"店家:"+infodata.store}}
-<br> {{"消費內容:"+ infodata.content}}
-<br> {{"消費者:"+ infodata.man}}
-<br> {{"時間:"+infodata.dateAt}}
-<br> {{"目前金額:"+(infodata.bcash +infodata.topUp-infodata.pay )}}
-</span>
+<h4 *ngIf="auth.isAuthenticated()">
+
+  <div class="ui card">
+    <div class="image">
+      <img src="{{profile?.picture}}">
+    </div>
+    <div class="content">
+      <a class="header">{{ profile?.nickname }}</a>
+      <div class="meta">
+        <span class="date">{{profile?.updated_at}}</span>
+      </div>
+      <div class="description">
+        登入成功
+      </div>
+    </div>
+    <div class="extra content">
+      <a>
+      <i class="user icon"></i>
+         {{ profile?.name }}
+    </a>
+    </div>
+  </div>
+</h4>
+<h4 *ngIf="!auth.isAuthenticated()">
+  登出中! 請 <a (click)="auth.login()">登入</a>
+</h4>

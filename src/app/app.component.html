@@ -2,12 +2,17 @@
   <a class="item" style="width: 6.5em" routerLink="/home" routerLinkActive="active" #rla="routerLinkActive">
   首頁<i *ngIf="rla.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
   </a>
-  <a class="item" style="width: 9em" routerLink="/list-firebase" routerLinkActive="active" #rla1="routerLinkActive">
+  <a *ngIf="auth.isAuthenticated()" class="item" [ngClass]="{'disable':true}" style="width: 9em" routerLink="/list-firebase"
+    routerLinkActive="active" #rla1="routerLinkActive">
   訂餐帳本<i *ngIf="rla1.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
   </a>
-  <a class="item" style="width: 6.5em" routerLink="/check-manage" routerLinkActive="active" #rla2="routerLinkActive">
+  <a *ngIf="auth.isAuthenticated()" class="item" style="width: 6.5em" routerLink="/check-manage" routerLinkActive="active"
+    #rla2="routerLinkActive">
   新增<i *ngIf="rla2.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
   </a>
+  <div *ngIf="auth.isAuthenticated()" (click)="auth.logout()" class="right menu">
+    <a class="ui item active" routerLink="/home">登出</a>
+  </div>
 </div>
 <div class="ui segment" style="height:100%">
   <router-outlet></router-outlet>

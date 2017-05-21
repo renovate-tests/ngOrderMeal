@@ -1,3 +1,6 @@
+import { RouterModule } from '@angular/router';
+import { CallbackComponent } from './callback/callback.component';
+import { AuthService } from './auth/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -7,7 +10,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { CheckManageComponent } from './check-manage/check-manage.component';
 import { ListFirebaseComponent } from './list-firebase/list-firebase.component';
-import { AppRoutingModule } from './app-routing.module';
+import { appRoutes } from './app-routing.module';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { DetailComponent } from './list-firebase/detail/detail.component';
@@ -32,18 +35,19 @@ const firebase = {
     ListFirebaseComponent,
     DetailComponent,
     ViewTableComponent,
-    DatePickerDirective
+    DatePickerDirective,
+    CallbackComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule,
+    RouterModule.forRoot(appRoutes, { useHash: true }),
     AngularFireModule.initializeApp(firebase),
     AngularFireDatabaseModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,3 +1,5 @@
+import { AuthService } from './auth/auth.service';
+import { Method } from './lib/method';
 import { Component, OnInit } from '@angular/core';
 
 declare global {
@@ -10,12 +12,12 @@ declare global {
 Array.prototype.getMinItem = function (): any {
   return (this as any[]).reduce((x, y) =>
     new Date(x.dateAt) < new Date(y.dateAt) ? x : y);
-}
+};
 
 Array.prototype.getMaxItem = function (): any {
   return (this as any[]).reduce((x, y) =>
     new Date(x.dateAt) > new Date(y.dateAt) ? x : y);
-}
+};
 
 @Component({
   selector: 'app-root',
@@ -25,10 +27,13 @@ Array.prototype.getMaxItem = function (): any {
 export class AppComponent implements OnInit {
   title = '訂餐帳本';
 
-  constructor() {
+  constructor(public auth: AuthService) {
+    auth.handleAuthentication();
   }
 
   ngOnInit(): void {
+    // console.log(new OpaqueToken('1'));
+    // console.log(Method.GetFirebaseKeyTime('-KkUtgyiKXyQw71RSmDN'));
   }
 
 }
