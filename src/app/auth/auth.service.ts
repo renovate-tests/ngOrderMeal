@@ -29,7 +29,7 @@ export class AuthService {
 
   public handleAuthentication(): void {
     this.auth0.parseHash(window.location.hash, (err, authResult) => {
-      console.log(authResult, err);
+      console.log(authResult, err, AUTH_CONFIG.callbackURL);
       if (authResult && authResult.accessToken && authResult.idToken) {
         // window.location.hash = '';
         this.setSession(authResult);

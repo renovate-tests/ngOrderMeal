@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  host: 'https://ordermeal-76bf4.firebaseapp.com'
 };
