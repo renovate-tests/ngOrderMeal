@@ -1,4 +1,4 @@
-import { environment } from "environments/environment";
+import { environment } from 'environments/environment';
 
 interface AuthConfig {
   clientID: string;
@@ -7,7 +7,7 @@ interface AuthConfig {
 }
 
 export const AUTH_CONFIG: AuthConfig = {
-  clientID: '023h8zWxxcWa2YBLjdNBHMcyLFdslRpJ',
+  clientID: environment.clientId,
   domain: 'yutse.auth0.com',
   callbackURL: environment.host + '/#/callback'
 };
