@@ -1,0 +1,7 @@
+<span>使用方式 csv 複制貼上 tab 為分割</span>
+<br>
+<span>三欄依序: 消費者，商品，價格</span>
+<br>
+<textarea rows="20" cols="50" [(ngModel)]="text"></textarea>
+<br>
+{{onchange(text) | json}}

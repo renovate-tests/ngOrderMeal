@@ -95,4 +95,11 @@ export class ViewTableComponent implements OnInit, OnChanges {
       this.db.list('/items').remove(key);
     }
   }
+  trackByItem(index, item) {
+    if (item instanceof Date) {
+      item = item.toLocaleString();
+    }
+    return item;
+  }
+
 }

@@ -1,3 +1,4 @@
+import { MultiInsertComponent } from './multi-insert/multi-insert.component';
 import { CallbackComponent } from './callback/callback.component';
 import { Routes } from '@angular/router';
 
@@ -11,6 +12,7 @@ export const appRoutes: Routes = [
     { path: 'check-manage', component: CheckManageComponent },
     { path: 'list-firebase', component: ListFirebaseComponent },
     { path: 'check-manage/:id', component: CheckManageComponent },
+    { path: 'multi-insert', component: MultiInsertComponent },
     { path: 'callback', component: CallbackComponent },
     { path: '**', component: HomeComponent }
 ];

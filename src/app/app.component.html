@@ -10,6 +10,10 @@
     #rla2="routerLinkActive">
   新增<i *ngIf="rla2.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
   </a>
+  <a *ngIf="auth.isAuthenticated()" class="item" style="width: 9em" routerLink="/multi-insert" routerLinkActive="active"
+    #rla3="routerLinkActive">
+  多筆新增<i *ngIf="rla3.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
+  </a>
   <div *ngIf="auth.isAuthenticated()" (click)="auth.logout()" class="right menu">
     <a class="ui item active" routerLink="/home">登出</a>
   </div>
