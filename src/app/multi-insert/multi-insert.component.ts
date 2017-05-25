@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class MultiInsertComponent implements OnInit {
 
   text = '';
+  output = [];
 
   constructor() { }
 
@@ -15,20 +16,18 @@ export class MultiInsertComponent implements OnInit {
     // console.log(this.text);
   }
 
-  onchange(a: string): any {
-    const output = [];
+  onchange(a: string): void {
     const arr = a.split('\n');
     for (const value of arr) {
       const aaa = value.split('\t');
       if (aaa.length >= 3) {
-        output.push({
+        this.output.push({
           '消費者': aaa[0],
           '商品': aaa[1],
           '價格': aaa[2]
         });
       }
     }
-    return output;
   }
 
 }

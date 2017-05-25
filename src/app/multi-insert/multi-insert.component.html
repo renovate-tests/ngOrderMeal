@@ -1,7 +1,23 @@
-<span>使用方式 csv 複制貼上 tab 為分割</span>
-<br>
-<span>三欄依序: 消費者，商品，價格</span>
-<br>
-<textarea rows="20" cols="50" [(ngModel)]="text"></textarea>
-<br>
-{{onchange(text) | json}}
+<div class="flex-row">
+    <div>
+        <span>使用方式 csv 複制貼上 tab 為分割</span>
+        <br>
+        <span>三欄依序: 消費者，商品，價格</span>
+        <br>
+        <textarea rows="20" cols="50" ngModel (ngModelChange)="onchange($event)"></textarea>
+    </div>
+    <div style="margin-left:1em; width: 30em">
+        <table  class="ui celled table">
+            <tr>
+                <th style="width:30%;height:30px;text-align:center">消費者</th>
+                <th style="width:45%;height:30px;text-align:center">商品</th>
+                <th style="width:25%;height:30px;text-align:center">價格</th>
+            </tr>
+            <tr *ngFor="let a of output">
+                <td>{{a['消費者']}}</td>
+                <td>{{a['商品']}}</td>
+                <td style="text-align:right">{{a['價格']}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
