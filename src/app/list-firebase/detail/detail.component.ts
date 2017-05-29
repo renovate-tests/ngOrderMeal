@@ -1,7 +1,7 @@
 import {
   Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges, SimpleChanges
 } from '@angular/core';
-import { Method } from 'app/lib/method';
+import { Method } from '../../service/method';
 
 
 @Component({

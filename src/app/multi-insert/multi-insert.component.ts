@@ -17,6 +17,7 @@ export class MultiInsertComponent implements OnInit {
   }
 
   onchange(a: string): void {
+    this.output = [];
     const arr = a.split('\n');
     for (const value of arr) {
       const aaa = value.split('\t');

@@ -37,8 +37,12 @@ export class CheckManageComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(x => {
       if (x && Object.keys(x).length > 0) {
-        if (x.dateAt) {
-          this.Update(x);
+        if (x.key) {
+          this.db.object(`/items/${x.key}`).subscribe(y => {
+            // console.log(y);
+            this.Update(y);
+          });
+
         } else {
           this.Insert(x);
         }
@@ -59,12 +63,14 @@ export class CheckManageComponent implements OnInit {
   }
 
   Update(x) {
-    this.form.patchValue({ man: x.man });
-    this.form.patchValue({ dateAt: x.dateAt });
-    const itemObservable = this.db.list('/items', { query: { orderByChild: 'man', equalTo: x.man } });
-    itemObservable.subscribe(y => {
-      const maxItem = y.find(z => Date.parse(z.dateAt) === Date.parse(x.dateAt));
-      this.form.patchValue({ bcash: maxItem.bcash });
+    this.form.patchValue({
+      man: x.man,
+      dateAt: x.dateAt,
+      store: x.store,
+      pay: x.pay,
+      content: x.content,
+      bcash: x.bcash,
+      topUp: x.topUp
     });
   }
 
@@ -73,10 +79,6 @@ export class CheckManageComponent implements OnInit {
     const itemObservable = this.db.list('/items');
     itemObservable.push(this.form.value);
     this.router.navigate(['/list-firebase']);
-  }
-
-  timechange() {
-    console.log('timechange');
   }
 
 }

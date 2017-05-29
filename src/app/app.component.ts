@@ -1,5 +1,5 @@
-import { AuthService } from './auth/auth.service';
-import { Method } from './lib/method';
+import { AuthService } from './service/auth.service';
+import { Method } from './service/method';
 import { Component, OnInit } from '@angular/core';
 
 declare global {

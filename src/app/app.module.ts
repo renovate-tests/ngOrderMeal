@@ -1,6 +1,6 @@
 import { RouterModule } from '@angular/router';
 import { CallbackComponent } from './callback/callback.component';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './service/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
