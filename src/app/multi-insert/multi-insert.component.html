@@ -13,7 +13,7 @@
                 <th style="width:45%;height:30px;text-align:center">商品</th>
                 <th style="width:25%;height:30px;text-align:center">價格</th>
             </tr>
-            <tr *ngFor="let a of output">
+            <tr *ngFor="let a of output; trackBy: trackByItem">
                 <td>{{a['消費者']}}</td>
                 <td>{{a['商品']}}</td>
                 <td style="text-align:right">{{a['價格']}}</td>

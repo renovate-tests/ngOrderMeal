@@ -30,5 +30,9 @@ export class MultiInsertComponent implements OnInit {
       }
     }
   }
+  trackByItem(index, item) {
+    // console.log(index, item);
+    return index;
+  }
 
 }

@@ -14,6 +14,7 @@ export class CheckManageComponent implements OnInit {
   form: FormGroup;
   items: FirebaseListObservable<any>;
   queryObj: Params;
+  insertArr: UserData[];
 
   constructor(private _fb: FormBuilder,
     private db: AngularFireDatabase,
@@ -22,7 +23,6 @@ export class CheckManageComponent implements OnInit {
     private ngZone: NgZone,
     private el: ElementRef,
     private router: Router) {
-
     this.form = this._fb.group({
       bcash: 0,
       topUp: 0,
@@ -39,38 +39,25 @@ export class CheckManageComponent implements OnInit {
       if (x && Object.keys(x).length > 0) {
         if (x.key) {
           this.db.object(`/items/${x.key}`).subscribe(y => {
-            // console.log(y);
-            this.Update(y);
+            this.form.patchValue(y);  // Update
           });
-
         } else {
           this.Insert(x);
         }
-      } else {
       }
       this.queryObj = x;
       console.log(x);
     });
+
   }
 
-  Insert(x) {
+  Insert(x: Params) {
     this.form.patchValue({ man: x.man });
-    const itemObservable = this.db.list('/items', { query: { orderByChild: 'man', equalTo: x.man } });
-    itemObservable.subscribe(y => {
+    this.items = this.db.list('/items', { query: { orderByChild: 'man', equalTo: x.man } });
+    this.items.subscribe((y: UserData[]) => {
+      this.insertArr = y;
       const maxItem = y.getMaxItem();
       this.form.patchValue({ bcash: maxItem.bcash + maxItem.topUp - maxItem.pay });
-    });
-  }
-
-  Update(x) {
-    this.form.patchValue({
-      man: x.man,
-      dateAt: x.dateAt,
-      store: x.store,
-      pay: x.pay,
-      content: x.content,
-      bcash: x.bcash,
-      topUp: x.topUp
     });
   }
 
@@ -79,6 +66,16 @@ export class CheckManageComponent implements OnInit {
     const itemObservable = this.db.list('/items');
     itemObservable.push(this.form.value);
     this.router.navigate(['/list-firebase']);
+  }
+
+  dateChange(value) {
+    const arr = this.insertArr.filter(z => Date.parse(z.dateAt) <= Date.parse(value));
+    if (arr.length > 0) {
+      const maxItem = arr.getMaxItem();
+      this.form.patchValue({ bcash: maxItem.bcash + maxItem.topUp - maxItem.pay });
+    } else {
+      this.form.patchValue({ bcash: 0 });
+    }
   }
 
 }

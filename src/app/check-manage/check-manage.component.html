@@ -5,17 +5,17 @@
 
       <div class="field">
         <label>消費者</label>
-        <div class="ui input" [ngClass]="{'disabled' : queryObj.man }">
+        <div class="ui input" [ngClass]="{'disabled' : queryObj.key || queryObj.man }">
           <input type="text" id="man" formControlName="man">
         </div>
       </div>
       <div class="field">
         <label>時間</label>
-        <div class="ui input" [ngClass]="{'disabled' : queryObj.dateAt }">
+        <div class="ui input" [ngClass]="{'disabled' : queryObj.key }">
           <div class="ui calendar" id="dateAt_css" style="width:100%" appDatePicker (outputDate)="form.patchValue({ dateAt: $event?.toLocaleDateString() })">
             <div class="ui input left icon">
               <i class="calendar icon"></i>
-              <input type="text" id="dateAt" formControlName="dateAt">
+              <input type="text" id="dateAt" formControlName="dateAt"  (ngModelChange)="dateChange($event)">
             </div>
           </div>
         </div>
