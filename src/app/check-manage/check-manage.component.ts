@@ -63,8 +63,20 @@ export class CheckManageComponent implements OnInit {
 
   check() {
     console.log(this.form.value);
-    const itemObservable = this.db.list('/items');
-    itemObservable.push(this.form.value);
+    if (this.queryObj.key) {
+      const data: UserData = this.form.value;
+      const itemObservable = this.db.object(`/items/${this.queryObj.key}`);
+      itemObservable.update(<UserData>{
+        pay: data.pay,
+        topUp: data.topUp,
+        store: data.store,
+        content: data.content
+      });
+    } else {
+      const itemObservable = this.db.list('/items');
+      itemObservable.push(this.form.value);
+    }
+
     this.router.navigate(['/list-firebase']);
   }
 
