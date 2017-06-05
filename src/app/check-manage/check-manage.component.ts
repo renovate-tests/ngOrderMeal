@@ -15,7 +15,8 @@ export class CheckManageComponent implements OnInit {
   items: FirebaseListObservable<any>;
   queryObj: Params;
   insertArr: UserData[];
-
+  bTopUp = 0;
+  bPay = 0;
   constructor(private _fb: FormBuilder,
     private db: AngularFireDatabase,
     private route: ActivatedRoute,
@@ -38,8 +39,10 @@ export class CheckManageComponent implements OnInit {
     this.route.queryParams.subscribe(x => {
       if (x && Object.keys(x).length > 0) {
         if (x.key) {
-          this.db.object(`/items/${x.key}`).subscribe(y => {
+          this.db.object(`/items/${x.key}`).subscribe((y: UserData) => {
             this.form.patchValue(y);  // Update
+            this.bTopUp = y.topUp;
+            this.bPay = y.pay;
           });
         } else {
           this.Insert(x);
@@ -62,9 +65,33 @@ export class CheckManageComponent implements OnInit {
   }
 
   check() {
-    console.log(this.form.value);
+    // console.log(this.form.value);
+    const data: UserData = this.form.value;
+    const queryData = this.db.database.ref('items').orderByChild('man').equalTo(data.man);
+    // const diff_val = (data.topUp - data.pay) - (this.bTopUp - this.bPay);
+    const bcash_now = data.bcash + data.topUp - data.pay;
+
+    queryData.on('value', snapshot => {
+      const keys = [];
+      const bcashs = [];
+      snapshot.forEach((child) => {
+        const val_dateAt = child.child('dateAt').val();
+        const val_bcash = child.child('bcash').val() as number;
+        const val_topUp = child.child('topUp').val() as number;
+        const val_pay = child.child('pay').val() as number;
+        if (Date.parse(val_dateAt) > Date.parse(data.dateAt)) {
+          keys.push(child.key);
+          bcashs.push(val_bcash + bcash_now);
+        }
+        return false;
+      });
+      keys.forEach((key, i) => {
+        const itemObservable = this.db.object(`/items/${key}`);
+        itemObservable.update(<UserData>{ bcash: bcashs[i] });
+      });
+    });
+    // ================================================================
     if (this.queryObj.key) {
-      const data: UserData = this.form.value;
       const itemObservable = this.db.object(`/items/${this.queryObj.key}`);
       itemObservable.update(<UserData>{
         pay: data.pay,
@@ -74,19 +101,26 @@ export class CheckManageComponent implements OnInit {
       });
     } else {
       const itemObservable = this.db.list('/items');
-      itemObservable.push(this.form.value);
+      itemObservable.push(data);
     }
 
     this.router.navigate(['/list-firebase']);
   }
 
-  dateChange(value) {
+  dateChange(value): void {
+    // tslint:disable-next-line:curly
+    if (!this.insertArr) return;
     const arr = this.insertArr.filter(z => Date.parse(z.dateAt) <= Date.parse(value));
     if (arr.length > 0) {
       const maxItem = arr.getMaxItem();
       this.form.patchValue({ bcash: maxItem.bcash + maxItem.topUp - maxItem.pay });
     } else {
       this.form.patchValue({ bcash: 0 });
+    }
+  }
+  getDate($event: any) {
+    if ($event && this.queryObj.key) {
+      this.form.patchValue({ dateAt: $event.toLocaleDateString() })
     }
   }
 

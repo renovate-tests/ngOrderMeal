@@ -12,7 +12,8 @@
       <div class="field">
         <label>時間</label>
         <div class="ui input" [ngClass]="{'disabled' : queryObj.key }">
-          <div class="ui calendar" id="dateAt_css" style="width:100%" appDatePicker (outputDate)="form.patchValue({ dateAt: $event?.toLocaleDateString() })">
+          <!--<div class="ui calendar" id="dateAt_css" style="width:100%" appDatePicker (outputDate)="form.patchValue({ dateAt: $event?.toLocaleDateString() })">-->
+          <div class="ui calendar" id="dateAt_css" style="width:100%" appDatePicker (outputDate)="getDate($event)">
             <div class="ui input left icon">
               <i class="calendar icon"></i>
               <input type="text" id="dateAt" formControlName="dateAt"  (ngModelChange)="dateChange($event)">
