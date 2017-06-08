@@ -7,8 +7,8 @@
 //         console.log(x.json());
 //     })
 
-var CACHE = 'cache-v1';
-var URLS_TO_CACHE = [
+const CACHE = 'cache-v1';
+const URLS_TO_CACHE = [
     './',
     //   './polyfills.*.js',
     //   './styles.*.js',
@@ -79,7 +79,7 @@ self.addEventListener('activate', function (event) {
     // The following code would do this by looping through all of the
     // caches in the service worker and deleting any caches that
     // aren't defined in the cache whitelist.
-    var cacheWhitelist = ['starwars-api-site-cache-v1', 'some-other-posts-cache-v1'];
+    const cacheWhitelist = [CACHE, 'some-other-posts-cache-v1'];
 
     // we use waitUntil() to prevent the worker
     // to be killed until the cache is updated.
