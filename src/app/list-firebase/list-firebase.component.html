@@ -1,10 +1,10 @@
 <div class="ui form">
     <div class="three fields">
         <div class="inline field" style="width:350px">
-            <div class="ui calendar" id="dateAt_css" appDatePicker (outputDate)="today = $event">
+            <div class="ui calendar" id="dateAt_css" appDatePicker (outputDate)="queryDate = $event">
                 <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" style="width:300px" id="dateAt" [value]="today.toLocaleDateString()">
+                    <input type="text" style="width:300px" id="dateAt" [value]="queryDate.toLocaleDateString()">
                 </div>
             </div>
         </div>
@@ -18,15 +18,15 @@
     </div>
     <div class="field" style="margin-bottom:1em">
         <div class="ui checkbox" style="margin-right:1em">
-            <input type="checkbox" [checked]="permission.insert" (change)="permission = {insert: !permission.insert, update: permission.update, delete:permission.delete}">
+            <input type="checkbox" [checked]="permission.insert" (change)="permission = {}.constructor.assign({},permission,{insert: !permission.insert});">
             <label>新增</label>
         </div>
         <div class="ui checkbox" style="margin-right:1em">
-            <input type="checkbox" [checked]="permission.update" (change)="permission = {insert: permission.insert, update: !permission.update, delete:permission.delete}">
+            <input type="checkbox" [checked]="permission.update" (change)="permission = {}.constructor.assign({},permission,{update: !permission.update});">
             <label>修改</label>
         </div>
         <div class="ui checkbox" style="margin-right:1em">
-            <input type="checkbox" [checked]="permission.delete" (change)="permission = {insert: permission.insert, update: permission.update, delete:!permission.delete}">
+            <input type="checkbox" [checked]="permission.delete" (change)="permission = {}.constructor.assign({},permission,{delete: !permission.delete});">
             <label>刪除</label>
         </div>
         <div class="ui checkbox">

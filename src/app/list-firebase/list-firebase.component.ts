@@ -19,8 +19,7 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
   infodata: any;
   items: FirebaseListObservable<any>;
   unstb: Subscription;
-  today: Date;
-  today1: Date;
+  queryDate: Date;
   beforeday = 20;
   permission = { insert: true, update: false, delete: false };
   isDetail = false;
@@ -32,25 +31,14 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
 
     this.sizeSubject = new Subject();
     this.items = db.list('/items');
-    // this.items = db.list('/items', {
-    //   query: {
-    //     orderByChild: 'man',
-    //     equalTo: this.sizeSubject,
-    //   }
-    // });
   }
 
   ngOnInit() {
-    this.today = new Date();
-    // this.sizeSubject.next('王xx');
+    this.queryDate = new Date();
     this.unstb = this.items.subscribe((x) => {
       this.arr = x;
-      // this.arr.push(x);
       this.Init();
-
     });
-    // this.sizeSubject.next('賢麟');
-    // this.sizeSubject.next('路人甲');
   }
   Init() {
     const arr = this.arr;
@@ -61,11 +49,10 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
 
   /* 臨時查詢撰寫查詢的時間範圍 */
   getDates(): void {
-
     this.dates = [];
     for (let index = 0; index < this.beforeday; index++) {
       let dat: Date;
-      dat = new Date(this.today.toDateString());
+      dat = new Date(this.queryDate.toDateString());
       dat.setDate(dat.getDate() - index);
       const week = dat.getDay();
       if (week === 0 || week === 6) { continue; }
