@@ -61,4 +61,8 @@ export class ListFirebaseComponent implements OnInit {
     }
     // this.cdRef.reattach();
   }
+
+  permissionChange(obj_chagne): void {
+    this.permission = Object.assign({}, this.permission, obj_chagne);
+  }
 }
