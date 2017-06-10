@@ -36,6 +36,6 @@
     </div>
 </div>
 <div class="flex-row">
-    <app-view-table [people]="people" [dates]="dates" [arr]="arr" [permission]="permission" [isDetail]="isDetail" (userUpdated)="infodata = $event"></app-view-table>
+    <app-view-table [people]="people" [dates]="dates" [groupObj]="groupObj" [permission]="permission" [isDetail]="isDetail" (userUpdated)="infodata = $event"></app-view-table>
     <app-detail style="margin-left:3px" [infodata]="infodata"></app-detail>
 </div>

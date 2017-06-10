@@ -1,9 +1,10 @@
+import { Observable } from 'rxjs/Observable';
 import {
-  Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, NgZone
+  Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
+import { Store } from '@ngrx/store';
+
 declare var $: any;
 
 @Component({
@@ -12,39 +13,39 @@ declare var $: any;
   styleUrls: ['./list-firebase.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class ListFirebaseComponent implements OnInit, OnDestroy {
-  arr: any[] = [];
+export class ListFirebaseComponent implements OnInit {
   people: any[] = [];
   dates: Date[] = [];
   infodata: any;
-  items: FirebaseListObservable<any>;
-  unstb: Subscription;
   queryDate: Date;
   beforeday = 20;
   permission = { insert: true, update: false, delete: false };
   isDetail = false;
-  sizeSubject: Subject<any>;
+  order: Observable<any>;
+  groupObj: any;
 
-  constructor(db: AngularFireDatabase,
-    private ngZone: NgZone,
+  constructor(
+    private store: Store<any>,
     private cdRef: ChangeDetectorRef) {
 
-    this.sizeSubject = new Subject();
-    this.items = db.list('/items');
+    this.order = store.select(state => state.order);
+    store.dispatch({ type: 'QUERY' });
   }
 
   ngOnInit() {
     this.queryDate = new Date();
-    this.unstb = this.items.subscribe((x) => {
-      this.arr = x;
-      this.Init();
+    const unstb = this.order.subscribe((x: any) => {
+      console.log(x);
+      // tslint:disable-next-line:curly
+      if (!x || x.groupObj === null) return;
+      this.people = x.peoples;
+      this.groupObj = x.groupObj;
+      this.getDates();
+
+      if (unstb) {
+        unstb.unsubscribe();
+      }
     });
-  }
-  Init() {
-    const arr = this.arr;
-    this.people = arr.map(x => x.man)
-      .filter((v, i, a) => a.indexOf(v) === i);
-    this.getDates();
   }
 
   /* 臨時查詢撰寫查詢的時間範圍 */
@@ -59,11 +60,5 @@ export class ListFirebaseComponent implements OnInit, OnDestroy {
       this.dates.push(dat);
     }
     // this.cdRef.reattach();
-  }
-
-  ngOnDestroy(): void {
-    if (this.unstb !== null) {
-      this.unstb.unsubscribe();
-    }
   }
 }

@@ -1,5 +1,8 @@
 import { AngularFireDatabase } from 'angularfire2/database';
-import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef,
+  Output, EventEmitter, OnChanges, SimpleChanges
+} from '@angular/core';
 
 @Component({
   selector: 'app-view-table',
@@ -11,7 +14,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, O
 export class ViewTableComponent implements OnInit, OnChanges {
   @Input() people: string[];
   @Input() dates: Date[];
-  @Input() arr: any[];
+  @Input() groupObj: any;
   @Input() permission = { insert: false, update: false, delete: false };
   @Input() isDetail = false;
   @Output() userUpdated = new EventEmitter();
@@ -25,26 +28,22 @@ export class ViewTableComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
       this.cdRef.reattach();
-      // if (changes['permission']) {
-      //   this.cdRef.detach();
-      // } else {
-      // }
       this.getBcashs();
     }
-    console.log(changes);
+    // console.log(changes);
   }
 
   getBcashs() {
     for (const value of this.people) {
-      const item = this.arr.filter(x => x.man === value).getMaxItem();
+      const item = this.groupObj[value].getMaxItem();
       this.bcashs[value] = item.bcash + item.topUp - item.pay;
     }
   }
 
   filterData(dat: Date, name): any {
     // console.log(dat.toLocaleDateString(), name);
-    const arr = this.arr as any[];
-    const item = arr.find(x => x.man === name && x.dateAt === dat.toLocaleDateString());
+    const arr = this.groupObj[name] as any[];
+    const item = arr.find(x => x.dateAt === dat.toLocaleDateString());
     this.datapoint = null;
     if (item != null && (item.topUp + item.pay > 0)) {
       const money = item.bcash + item.topUp - item.pay;
@@ -63,7 +62,7 @@ export class ViewTableComponent implements OnInit, OnChanges {
 
   /*  取得單筆帳單  */
   getInfo(dat, name): any {
-    let caldata = this.arr.filter(x => x.man === name && new Date(x.dateAt) <= dat);
+    let caldata = this.groupObj[name].filter(x =>  new Date(x.dateAt) <= dat);
 
     // 取得查詢範圍內的第一筆資料，保留第一筆先前金額
     const minDateItem = (caldata as any[]).getMinItem();

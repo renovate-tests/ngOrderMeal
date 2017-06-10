@@ -1,3 +1,4 @@
+import { OrderEffects } from './ngrx/effect/order-effect';
 import { RouterModule } from '@angular/router';
 import { CallbackComponent } from './callback/callback.component';
 import { AuthService } from './service/auth.service';
@@ -17,7 +18,9 @@ import { DetailComponent } from './list-firebase/detail/detail.component';
 import { ViewTableComponent } from './list-firebase/view-table/view-table.component';
 import { DatePickerDirective } from './directive/date-picker.directive';
 import { MultiInsertComponent } from './multi-insert/multi-insert.component';
-
+import { StoreModule } from '@ngrx/store';
+import { OrderReducer } from './ngrx/reducer/order-reducer';
+import { EffectsModule } from '@ngrx/effects';
 
 const firebase = {
   apiKey: 'AIzaSyC22dRy8lpaa7QHsfzO_BUWoR4MMVuofd8',
@@ -45,6 +48,8 @@ const firebase = {
     ReactiveFormsModule,
     FormsModule,
     HttpModule,
+    EffectsModule.runAfterBootstrap(OrderEffects),
+    StoreModule.provideStore({ order: OrderReducer }),
     RouterModule.forRoot(appRoutes, { useHash: true }),
     AngularFireModule.initializeApp(firebase),
     AngularFireDatabaseModule
