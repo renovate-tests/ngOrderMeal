@@ -1,8 +1,6 @@
 import { FormGroup } from '@angular/forms';
 import { Directive, ElementRef, NgZone, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-declare var $: any;
-
 @Directive({
   selector: '[appDatePicker]'
 })
