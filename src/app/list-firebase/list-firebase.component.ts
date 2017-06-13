@@ -37,8 +37,8 @@ export class ListFirebaseComponent implements OnInit {
     const unstb = this.order.subscribe((x: any) => {
       console.log(x);
       // tslint:disable-next-line:curly
-      if (!x || x.groupObj === null) return;
-      this.people = x.peoples;
+      if (!x || x.groupObj === undefined) return;
+      this.people = x.people;
       this.groupObj = x.groupObj;
       this.getDates();
 

@@ -7,8 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 
-declare var R: any;
-
 @Injectable()
 export class OrderEffects {
     constructor(
@@ -26,21 +24,26 @@ export class OrderEffects {
                         type: 'QUERY_SUCCESS',
                         payload: {
                             groupObj: obj,
-                            peoples: Object.keys(obj)
+                            people: Object.keys(obj)
                         }
                     };
                 });
         });
 
     // tslint:disable-next-line:member-ordering
-    // @Effect() posts1$: Observable<Action> = this.actions$
-    //     .ofType('QUERY2')
-    //     .switchMap(action => {
-    //         return this.db.list('/items')
-    //             .map(res => {
-    //                 console.log(res);
-    //                 return { type: 'QUERY_SUCCESS', payload: res };
-    //             });
-    //     });
+    @Effect() posts1$: Observable<Action> = this.actions$
+        .ofType('GETDATA')
+        .switchMap(action => {
+            return this.db.list('/items', { query: { orderByChild: 'man', equalTo: action.payload.man } })
+                .map(res => {
+                    return {
+                        type: 'GETDATA_SUCCESS',
+                        payload: {
+                            manArr: R.sortBy(R.prop('dateAt'))(res)
+                        }
+                    };
+                });
+        });
+
     // tslint:disable-next-line:eofline
 }

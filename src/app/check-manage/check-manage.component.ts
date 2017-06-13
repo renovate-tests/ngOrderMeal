@@ -1,28 +1,28 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone, ElementRef } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-// import { Observable } from 'rxjs/Observable';
-declare var $: any;
+
 
 @Component({
   selector: 'app-check-manage',
   templateUrl: './check-manage.component.html',
   styleUrls: ['./check-manage.component.css']
 })
-export class CheckManageComponent implements OnInit {
+export class CheckManageComponent implements OnInit, OnDestroy {
   form: FormGroup;
   items: FirebaseListObservable<any>;
-  queryObj: Params;
-  insertArr: UserData[];
-  bTopUp = 0;
-  bPay = 0;
+  queryObj: UserData;
+  // insertArr: UserData[];
+  manArr: UserData[];
+  key: any = null;
+
   constructor(private _fb: FormBuilder,
     private db: AngularFireDatabase,
     private route: ActivatedRoute,
-    private cdRef: ChangeDetectorRef,
     private ngZone: NgZone,
-    private el: ElementRef,
+    private store: Store<any>,
     private router: Router) {
     this.form = this._fb.group({
       bcash: 0,
@@ -36,92 +36,90 @@ export class CheckManageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(x => {
-      if (x && Object.keys(x).length > 0) {
-        if (x.key) {
-          this.db.object(`/items/${x.key}`).subscribe((y: UserData) => {
-            this.form.patchValue(y);  // Update
-            this.bTopUp = y.topUp;
-            this.bPay = y.pay;
-          });
-        } else {
-          this.Insert(x);
-        }
+    this.route.queryParams.subscribe(param => {
+      if (param && Object.keys(param).length > 0) {
+        // 在新增新人時需要調整
+        this.store.dispatch({
+          type: 'GETDATA', payload: { man: param.man }
+        });
+        const unsub = this.store.select(state => state.order).subscribe(x => {
+          // tslint:disable-next-line:curly
+          if (!x.manArr) return;
+          this.manArr = x.manArr;
+          if (param.key) {
+            this.key = param.key;
+            this.queryObj = R.find(z => z.$key === this.key)(x.manArr);
+            this.form.patchValue(this.queryObj);
+          } else {
+            this.queryObj = <UserData>{ man: param.man, topUp: 0, pay: 0 };
+            this.form.patchValue({ man: param.man });
+          }
+          this.SetBcash();
+          if (unsub) {
+            unsub.unsubscribe();
+          }
+        });
       }
-      this.queryObj = x;
-      console.log(x);
-    });
-
-  }
-
-  Insert(x: Params) {
-    this.form.patchValue({ man: x.man });
-    this.items = this.db.list('/items', { query: { orderByChild: 'man', equalTo: x.man } });
-    this.items.subscribe((y: UserData[]) => {
-      this.insertArr = y;
-      const maxItem = y.getMaxItem();
-      this.form.patchValue({ bcash: maxItem.bcash + maxItem.topUp - maxItem.pay });
     });
   }
 
   check() {
-    // console.log(this.form.value);
-    const data: UserData = this.form.value;
-    const queryData = this.db.database.ref('items').orderByChild('man').equalTo(data.man);
-    // const diff_val = (data.topUp - data.pay) - (this.bTopUp - this.bPay);
-    const bcash_now = data.bcash + data.topUp - data.pay;
-
-    queryData.on('value', snapshot => {
-      const keys = [];
-      const bcashs = [];
-      snapshot.forEach((child) => {
-        const val_dateAt = child.child('dateAt').val();
-        const val_bcash = child.child('bcash').val() as number;
-        const val_topUp = child.child('topUp').val() as number;
-        const val_pay = child.child('pay').val() as number;
-        if (Date.parse(val_dateAt) > Date.parse(data.dateAt)) {
-          keys.push(child.key);
-          bcashs.push(val_bcash + bcash_now);
-        }
-        return false;
-      });
-      keys.forEach((key, i) => {
-        const itemObservable = this.db.object(`/items/${key}`);
-        itemObservable.update(<UserData>{ bcash: bcashs[i] });
-      });
-    });
-    // ================================================================
-    if (this.queryObj.key) {
-      const itemObservable = this.db.object(`/items/${this.queryObj.key}`);
-      itemObservable.update(<UserData>{
-        pay: data.pay,
-        topUp: data.topUp,
-        store: data.store,
-        content: data.content
-      });
-    } else {
-      const itemObservable = this.db.list('/items');
-      itemObservable.push(data);
+    const new_data: UserData = this.form.value;
+    const old_data = <UserData>this.queryObj;
+    const GetDate = R.compose(Date.parse, R.prop('dateAt'));
+    const Condition = R.converge(R.gt)([GetDate, R.always(GetDate(new_data))]);
+    const after_datas = R.filter(Condition)(this.manArr);
+    const diff_value = (new_data.topUp - new_data.pay) - (old_data.topUp - old_data.pay);
+    const items = this.db.list('/items');
+    // 修改金額之後的金額的修改
+    if (diff_value !== 0) {
+      const updateData1 = (a: UserData, b) => {
+        items.update(`${b.$key}`, { bcash: a.bcash + a.topUp - a.pay });
+        return b;
+      };
+      R.reduce(updateData1, new_data)(after_datas);
     }
-
+    // 當前資料新增與修改
+    if (this.isInsert) {
+      items.push(new_data);
+    } else {
+      items.update(`${this.key}`, new_data);
+    }
     this.router.navigate(['/list-firebase']);
   }
 
-  dateChange(value): void {
+  getDate($event: any) {
+    if ($event) {
+      this.form.patchValue({ dateAt: $event.toLocaleDateString() });
+    }
+    this.SetBcash();
+  }
+
+  SetBcash() {
     // tslint:disable-next-line:curly
-    if (!this.insertArr) return;
-    const arr = this.insertArr.filter(z => Date.parse(z.dateAt) <= Date.parse(value));
-    if (arr.length > 0) {
-      const maxItem = arr.getMaxItem();
-      this.form.patchValue({ bcash: maxItem.bcash + maxItem.topUp - maxItem.pay });
+    if (!this.manArr) return;
+    const GetDate = R.compose(Date.parse, R.prop('dateAt'));
+    const Condition = R.converge(R.lt, [GetDate, R.always(Date.parse(this.form.value.dateAt))]);
+    const item = R.find(Condition)(R.reverse(this.manArr));
+    if (item) {
+      this.form.patchValue({ bcash: item.bcash + item.topUp - item.pay });
     } else {
       this.form.patchValue({ bcash: 0 });
     }
   }
-  getDate($event: any) {
-    if ($event && this.queryObj.key) {
-      this.form.patchValue({ dateAt: $event.toLocaleDateString() })
-    }
+
+  public get isInsert(): boolean {
+    return this.key === null;
+  }
+  public get isExist(): boolean {
+    // tslint:disable-next-line:curly
+    if (!this.manArr) return false;
+    const arr = this.isInsert ? this.manArr : this.manArr.filter((x: any) => x.$key !== this.key);
+    return R.contains(this.form.value.dateAt)(R.map(x => x.dateAt)(arr));
+  }
+
+
+  ngOnDestroy(): void {
   }
 
 }

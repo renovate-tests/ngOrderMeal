@@ -15,7 +15,7 @@
       <span *ngIf="filterData(d,a)?.bcash == null; else elseBlock " (click)="getInfo(d, a)">
         <!--修改 icon-->
         <span *ngIf="permission.update && (datapoint?.topUp + datapoint?.pay) > 0">
-          <i routerLink="/check-manage" [queryParams]="{key:datapoint?.key}" class="edit icon"></i><br>
+          <i routerLink="/check-manage" [queryParams]="{key:datapoint?.key, man: a}" class="edit icon"></i><br>
         </span>
       <!--刪除 icon-->
       <span *ngIf="permission.delete && (datapoint?.topUp + datapoint?.pay) > 0">

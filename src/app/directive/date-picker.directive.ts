@@ -8,7 +8,7 @@ export class DatePickerDirective implements OnInit {
   @Input() form: FormGroup;
   @Input() formDateName = 'dateAt';
   @Input() initDate;
-  @Output() outputDate = new EventEmitter();
+  @Output() ChangeDate = new EventEmitter();
 
   months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
 
@@ -23,13 +23,13 @@ export class DatePickerDirective implements OnInit {
     const months = this.months;
     const form = this.form;
     const controlName = this.formDateName;
-    const outputDate = this.outputDate;
+    const ChangeDate = this.ChangeDate;
     $(el).calendar({
       type: 'date',
       today: true,
       initialDate: null,
       onChange: function (date, text, mode) {
-        outputDate.emit(date);
+        ChangeDate.emit(date);
         if (Date.parse(text) === NaN) {
           $(el).calendar('clear');
         }
