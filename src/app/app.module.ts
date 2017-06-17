@@ -1,3 +1,4 @@
+import { IndexedDBService } from './service/indexeddb.service';
 import { OrderEffects } from './ngrx/effect/order-effect';
 import { RouterModule } from '@angular/router';
 import { CallbackComponent } from './callback/callback.component';
@@ -54,7 +55,7 @@ const firebase = {
     AngularFireModule.initializeApp(firebase),
     AngularFireDatabaseModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, IndexedDBService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

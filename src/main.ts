@@ -8,9 +8,9 @@ if (environment.production) {
   enableProdMode();
 }
 
-// platformBrowserDynamic().bootstrapModule(AppModule);
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .then(() => registerServiceWorker());
+platformBrowserDynamic().bootstrapModule(AppModule);
+// platformBrowserDynamic().bootstrapModule(AppModule)
+//   .then(() => registerServiceWorker());
 
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {

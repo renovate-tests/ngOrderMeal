@@ -3,6 +3,7 @@ import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class CheckManageComponent implements OnInit, OnDestroy {
   // insertArr: UserData[];
   manArr: UserData[];
   key: any = null;
+  isNew = false;
 
   constructor(private _fb: FormBuilder,
     private db: AngularFireDatabase,
@@ -36,31 +38,35 @@ export class CheckManageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(param => {
-      if (param && Object.keys(param).length > 0) {
-        // 在新增新人時需要調整
-        this.store.dispatch({
-          type: 'GETDATA', payload: { man: param.man }
-        });
-        const unsub = this.store.select(state => state.order).subscribe(x => {
-          // tslint:disable-next-line:curly
-          if (!x.manArr) return;
-          this.manArr = x.manArr;
-          if (param.key) {
-            this.key = param.key;
-            this.queryObj = R.find(z => z.$key === this.key)(x.manArr);
-            this.form.patchValue(this.queryObj);
-          } else {
-            this.queryObj = <UserData>{ man: param.man, topUp: 0, pay: 0 };
-            this.form.patchValue({ man: param.man });
-          }
-          this.SetBcash();
-          if (unsub) {
-            unsub.unsubscribe();
-          }
-        });
-      }
-    });
+    //  this.route.queryParams.switchMap(x=>x)
+    const param = (this.route.queryParams as BehaviorSubject<any>).value;
+
+    if (!param.man) {
+      this.isNew = true;
+      return;
+    }
+    if (param && Object.keys(param).length > 0) {
+      this.store.dispatch({
+        type: 'GETDATA', payload: { man: param.man }
+      });
+      const unsub = this.store.select(state => state.order).subscribe(x => {
+        // tslint:disable-next-line:curly
+        if (!x.manArr) return;
+        this.manArr = x.manArr;
+        if (param.key) {
+          this.key = param.key;
+          this.queryObj = R.find(z => z.$key === this.key)(x.manArr);
+          this.form.patchValue(this.queryObj);
+        } else {
+          this.queryObj = <UserData>{ man: param.man, topUp: 0, pay: 0 };
+          this.form.patchValue({ man: param.man });
+        }
+        this.SetBcash();
+        if (unsub) {
+          unsub.unsubscribe();
+        }
+      });
+    }
   }
 
   check() {
@@ -108,16 +114,27 @@ export class CheckManageComponent implements OnInit, OnDestroy {
     }
   }
 
+  ManCheck() {
+    swal('目前無作用');
+  }
+
   public get isInsert(): boolean {
     return this.key === null;
   }
-  public get isExist(): boolean {
+
+  public get isDateExist(): boolean {
     // tslint:disable-next-line:curly
     if (!this.manArr) return false;
     const arr = this.isInsert ? this.manArr : this.manArr.filter((x: any) => x.$key !== this.key);
     return R.contains(this.form.value.dateAt)(R.map(x => x.dateAt)(arr));
   }
 
+  public get isManExist(): boolean {
+    // tslint:disable-next-line:curly
+    if (!this.manArr) return false;
+    const arr = this.isInsert ? this.manArr : this.manArr.filter((x: any) => x.$key !== this.key);
+    return R.contains(this.form.value.dateAt)(R.map(x => x.dateAt)(arr));
+  }
 
   ngOnDestroy(): void {
   }

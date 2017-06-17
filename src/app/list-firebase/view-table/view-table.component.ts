@@ -20,6 +20,11 @@ export class ViewTableComponent implements OnInit, OnChanges {
   @Output() userUpdated = new EventEmitter();
   datapoint: any;
   bcashs = {};
+  GetDate = (x: UserData) => Date.parse(x.dateAt);
+  // tslint:disable-next-line:member-ordering
+  MinItem: (x: any[]) => any = R.reduce(R.minBy(this.GetDate), Infinity);
+  // tslint:disable-next-line:member-ordering
+  MaxItem: (x: any[]) => any = R.reduce(R.maxBy(this.GetDate), 0);
 
   constructor(private cdRef: ChangeDetectorRef, private db: AngularFireDatabase) { }
 
@@ -35,7 +40,9 @@ export class ViewTableComponent implements OnInit, OnChanges {
 
   getBcashs() {
     for (const value of this.people) {
-      const item = this.groupObj[value].getMaxItem();
+       const item = this.groupObj[value].getMaxItem();
+      // const item = this.MaxItem(this.groupObj[value]);
+      // console.log(item, this.groupObj[value]);
       this.bcashs[value] = item.bcash + item.topUp - item.pay;
     }
   }
@@ -62,10 +69,11 @@ export class ViewTableComponent implements OnInit, OnChanges {
 
   /*  取得單筆帳單  */
   getInfo(dat, name): any {
-    let caldata = this.groupObj[name].filter(x =>  new Date(x.dateAt) <= dat);
+    let caldata = this.groupObj[name].filter(x => new Date(x.dateAt) <= dat);
 
     // 取得查詢範圍內的第一筆資料，保留第一筆先前金額
     const minDateItem = (caldata as any[]).getMinItem();
+    // console.log(minDateItem);
 
     // 當前資料
     const infodata = caldata.find(x => x.dateAt === dat.toLocaleDateString());

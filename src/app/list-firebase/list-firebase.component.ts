@@ -27,15 +27,15 @@ export class ListFirebaseComponent implements OnInit {
   constructor(
     private store: Store<any>,
     private cdRef: ChangeDetectorRef) {
-
     this.order = store.select(state => state.order);
+    // store.dispatch({ type: 'GETLocalDATA' });
     store.dispatch({ type: 'QUERY' });
   }
 
   ngOnInit() {
     this.queryDate = new Date();
     const unstb = this.order.subscribe((x: any) => {
-      console.log(x);
+      // console.log(x);
       // tslint:disable-next-line:curly
       if (!x || x.groupObj === undefined) return;
       this.people = x.people;

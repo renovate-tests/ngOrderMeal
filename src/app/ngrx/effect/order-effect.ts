@@ -6,6 +6,8 @@ import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/fromPromise';
 
 @Injectable()
 export class OrderEffects {
@@ -17,7 +19,7 @@ export class OrderEffects {
     @Effect() posts$: Observable<Action> = this.actions$
         .ofType('QUERY')
         .switchMap(action => {
-            return this.db.list('/items')
+            const getlist = this.db.list('/items')
                 .map(res => {
                     const obj = R.groupBy((x) => x.man)(res);
                     return {
@@ -28,6 +30,7 @@ export class OrderEffects {
                         }
                     };
                 });
+            return getlist;
         });
 
     // tslint:disable-next-line:member-ordering
@@ -40,6 +43,28 @@ export class OrderEffects {
                         type: 'GETDATA_SUCCESS',
                         payload: {
                             manArr: R.sortBy(R.prop('dateAt'))(res)
+                        }
+                    };
+                });
+        });
+
+
+    // tslint:disable-next-line:member-ordering
+    @Effect() posts2$: Observable<Action> = this.actions$
+        .ofType('GETLocalDATA')
+        .switchMap(action => {
+            const db = new Dexie('FriendsAndPetsDB');
+            db.version(1).stores({
+                friends: '++id,name,isCloseFriend'
+            });
+            db.open();
+            // db.friends.add({ name: 'Ingemar Bergman', isCloseFriend: 0 });
+            return Observable.fromPromise(db.friends.get(1))
+                .map(res => {
+                    return {
+                        type: 'GETLocalDATA_SUCCESS',
+                        payload: {
+                            abc: res
                         }
                     };
                 });

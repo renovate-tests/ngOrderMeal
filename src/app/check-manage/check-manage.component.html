@@ -8,6 +8,7 @@
         <div class="ui input" [ngClass]="{'disabled' : queryObj?.key || queryObj?.man }">
           <input type="text" id="man" formControlName="man">
         </div>
+        <button *ngIf="isNew" (click)="ManCheck()" type="button">檢查</button>
       </div>
       <div class="field">
         <label>時間</label>
@@ -24,7 +25,7 @@
         <div [ngStyle]="{'visibility':form.controls.dateAt.errors?.required ? null:'hidden'}">
           <span style="color:red">必填項目</span>
         </div>
-        <div [ngStyle]="{'visibility':isExist ? null:'hidden'}">
+        <div [ngStyle]="{'visibility':isDateExist ? null:'hidden'}">
           <span style="color:red">此日已資料存在</span>
         </div>
       </div>
@@ -58,7 +59,7 @@
 
 
     </div>
-    <button (click)="check()" [ngClass]="{'disabled' : form.invalid || (form.value.topUp + form.value.pay) === 0 || isExist}"
+    <button (click)="check()" [ngClass]="{'disabled' : form.invalid || (form.value.topUp + form.value.pay) === 0 || isDateExist}"
       style="margin-top:10px" class="ui submit button">送出</button>
   </form>
 </div>
