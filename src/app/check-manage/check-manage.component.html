@@ -2,22 +2,19 @@
   <form class="ui form" [formGroup]="form" style="margin: auto;width:60%">
     <div class="profile">
       <h2>輸入資料</h2>
-
       <div class="field">
         <label>消費者</label>
-        <div class="ui input" [ngClass]="{'disabled' : queryObj?.key || queryObj?.man }">
+        <div class="ui input" [ngClass]="{'disabled' : key || queryObj?.man }">
           <input type="text" id="man" formControlName="man">
         </div>
         <button *ngIf="isNew" (click)="ManCheck()" type="button">檢查</button>
       </div>
       <div class="field">
         <label>時間</label>
-        <div class="ui input" [ngClass]="{'disabled' : queryObj?.key }">
-          <!--<div class="ui calendar" id="dateAt_css" style="width:100%" appDatePicker (outputDate)="form.patchValue({ dateAt: $event?.toLocaleDateString() })">-->
+        <div class="ui input" [ngClass]="{'disabled' : key }">
           <div class="ui calendar" id="dateAt_css" style="width:100%" appDatePicker (ChangeDate)="getDate($event)">
             <div class="ui input left icon">
               <i class="calendar icon"></i>
-              <!--<input type="text" id="dateAt" formControlName="dateAt"  (ngModelChange)="dateChange($event)">-->
               <input type="text" id="dateAt" formControlName="dateAt">
             </div>
           </div>
@@ -56,8 +53,6 @@
         <label>消費內容</label>
         <textarea id="content" style=" resize: none;" formControlName="content" rows="5"></textarea>
       </div>
-
-
     </div>
     <button (click)="check()" [ngClass]="{'disabled' : form.invalid || (form.value.topUp + form.value.pay) === 0 || isDateExist}"
       style="margin-top:10px" class="ui submit button">送出</button>

@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -15,7 +15,6 @@ export class CheckManageComponent implements OnInit, OnDestroy {
   form: FormGroup;
   items: FirebaseListObservable<any>;
   queryObj: UserData;
-  // insertArr: UserData[];
   manArr: UserData[];
   key: any = null;
   isNew = false;
@@ -23,7 +22,6 @@ export class CheckManageComponent implements OnInit, OnDestroy {
   constructor(private _fb: FormBuilder,
     private db: AngularFireDatabase,
     private route: ActivatedRoute,
-    private ngZone: NgZone,
     private store: Store<any>,
     private router: Router) {
     this.form = this._fb.group({
@@ -38,7 +36,6 @@ export class CheckManageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    //  this.route.queryParams.switchMap(x=>x)
     const param = (this.route.queryParams as BehaviorSubject<any>).value;
 
     if (!param.man) {
@@ -74,13 +71,15 @@ export class CheckManageComponent implements OnInit, OnDestroy {
     const old_data = <UserData>this.queryObj;
     const GetDate = R.compose(Date.parse, R.prop('dateAt'));
     const Condition = R.converge(R.gt)([GetDate, R.always(GetDate(new_data))]);
-    const after_datas = R.filter(Condition)(this.manArr);
+    // tslint:disable-next-line:prefer-const 強迫更新時修改之後資料, 因此不能用 const
+    let after_datas = R.filter(Condition)(this.manArr);
     const diff_value = (new_data.topUp - new_data.pay) - (old_data.topUp - old_data.pay);
     const items = this.db.list('/items');
     // 修改金額之後的金額的修改
     if (diff_value !== 0) {
       const updateData1 = (a: UserData, b) => {
-        items.update(`${b.$key}`, { bcash: a.bcash + a.topUp - a.pay });
+        b.bcash = a.bcash + a.topUp - a.pay;
+        items.update(`${b.$key}`, { bcash: b.bcash });
         return b;
       };
       R.reduce(updateData1, new_data)(after_datas);
@@ -115,7 +114,11 @@ export class CheckManageComponent implements OnInit, OnDestroy {
   }
 
   ManCheck() {
-    swal('目前無作用');
+    new PNotify({
+      title: '增加成員測試中',
+      text: '目前無作用'
+    });
+    // swal('目前無作用');
   }
 
   public get isInsert(): boolean {

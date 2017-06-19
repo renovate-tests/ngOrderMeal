@@ -7,4 +7,5 @@ interface NodeModule {
 declare var $: any;
 declare var R: any;
 declare var Dexie: any;
-declare var swal: any;
+// declare var swal: any;
+declare var PNotify: any;

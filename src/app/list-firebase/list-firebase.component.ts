@@ -28,7 +28,6 @@ export class ListFirebaseComponent implements OnInit {
     private store: Store<any>,
     private cdRef: ChangeDetectorRef) {
     this.order = store.select(state => state.order);
-    // store.dispatch({ type: 'GETLocalDATA' });
     store.dispatch({ type: 'QUERY' });
   }
 
@@ -42,9 +41,9 @@ export class ListFirebaseComponent implements OnInit {
       this.groupObj = x.groupObj;
       this.getDates();
 
-      if (unstb) {
-        unstb.unsubscribe();
-      }
+      // if (unstb) {
+      //   unstb.unsubscribe();
+      // }
     });
   }
 
@@ -59,7 +58,6 @@ export class ListFirebaseComponent implements OnInit {
       if (week === 0 || week === 6) { continue; }
       this.dates.push(dat);
     }
-    // this.cdRef.reattach();
   }
 
   permissionChange(obj_chagne): void {
