@@ -40,7 +40,7 @@ export class ViewTableComponent implements OnInit, OnChanges {
 
   getBcashs() {
     for (const value of this.people) {
-       const item = this.groupObj[value].getMaxItem();
+      const item = this.groupObj[value].getMaxItem();
       // const item = this.MaxItem(this.groupObj[value]);
       // console.log(item, this.groupObj[value]);
       this.bcashs[value] = item.bcash + item.topUp - item.pay;
@@ -69,17 +69,17 @@ export class ViewTableComponent implements OnInit, OnChanges {
 
   /*  取得單筆帳單  */
   getInfo(dat, name): any {
-    let caldata = this.groupObj[name].filter(x => new Date(x.dateAt) <= dat);
+    let caldata = this.groupObj[name].filter(x => Date.parse(x.dateAt) <= dat.valueOf());
 
     // 取得查詢範圍內的第一筆資料，保留第一筆先前金額
     const minDateItem = (caldata as any[]).getMinItem();
     // console.log(minDateItem);
 
     // 當前資料
-    const infodata = caldata.find(x => x.dateAt === dat.toLocaleDateString());
+    const infodata = caldata.find(x => Date.parse(x.dateAt) === dat.valueOf());
 
     // 查詢範圍內資料(不含當前資料)
-    caldata = caldata.filter(x => new Date(x.dateAt) < dat);
+    caldata = caldata.filter(x => Date.parse(x.dateAt) < dat.valueOf());
     console.group();
     console.log('查詢範圍第一筆之前剩餘金額:' + minDateItem.bcash);
 
