@@ -42,7 +42,7 @@ export class OrderEffects {
                     return {
                         type: 'GETDATA_SUCCESS',
                         payload: {
-                            manArr: R.sortBy(R.prop('dateAt'))(res)
+                            manArr: R.sortBy(R.compose(Date.parse, R.prop('dateAt')))(res)
                         }
                     };
                 });
