@@ -1,3 +1,4 @@
+import { TodayListComponent } from './today-list/today-list.component';
 import { MultiInsertComponent } from './multi-insert/multi-insert.component';
 import { CallbackComponent } from './callback/callback.component';
 import { Routes } from '@angular/router';
@@ -13,6 +14,7 @@ export const appRoutes: Routes = [
     { path: 'list-firebase', component: ListFirebaseComponent },
     { path: 'check-manage/:id', component: CheckManageComponent },
     { path: 'multi-insert', component: MultiInsertComponent },
+    { path: 'today-list', component: TodayListComponent },
     { path: 'callback', component: CallbackComponent },
     { path: '**', component: HomeComponent }
 ];
