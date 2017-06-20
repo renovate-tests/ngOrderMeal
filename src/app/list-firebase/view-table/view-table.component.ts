@@ -50,7 +50,7 @@ export class ViewTableComponent implements OnInit, OnChanges {
   filterData(dat: Date, name): any {
     // console.log(dat.toLocaleDateString(), name);
     const arr = this.groupObj[name] as any[];
-    const item = arr.find(x => x.dateAt === dat.toLocaleDateString());
+    const item = arr.find(x => Date.parse(x.dateAt) === dat.valueOf());
     this.datapoint = null;
     if (item != null && (item.topUp + item.pay > 0)) {
       const money = item.bcash + item.topUp - item.pay;
