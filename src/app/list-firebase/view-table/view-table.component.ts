@@ -41,11 +41,6 @@ export class ViewTableComponent implements OnInit, OnChanges {
   getBcashs() {
     for (const value of this.people) {
       const item = this.groupObj[value].getMaxItem();
-<<<<<<< HEAD
-=======
-      // const item = this.MaxItem(this.groupObj[value]);
-      // console.log(item, this.groupObj[value]);
->>>>>>> d77dd41e4883e57644398ec3356e78ad5dc50db9
       this.bcashs[value] = item.bcash + item.topUp - item.pay;
     }
   }
