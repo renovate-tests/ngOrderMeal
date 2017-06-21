@@ -48,11 +48,16 @@
       <div class="header">{{p.man}}</div>
       <div class="description">
         <p>相關資料</p>
-         {{"店家:"+p.store}}
+        {{"店家:"+p.store}}
         <br> {{"消費內容:"+ p.content}}
-        <br> {{"消費者:"+ p.man}}
-        <!--<br> {{"時間:"+p.dateAt}}-->
-        <!--<br> {{"目前金額:"+(p.bcash +p.topUp-p.pay )}}-->
+        <br>
+        <span style="color:red">
+        {{"今日消費:"+p.pay}}
+        </span>
+        <br>
+        <span style="color:green">
+        {{"今日儲值:"+p.topUp}}
+        </span>
         <br> {{"建立時間:"+(getDateTime(p) )}}
       </div>
     </div>
