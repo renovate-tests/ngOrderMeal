@@ -1,11 +1,13 @@
-<table class="ui celled table" [style.width]="((people.length)*100 +140) + 'px'">
-  <tr>
-    <th style="width: 140px;height:40px;text-align:center">時間\人</th>
-    <th class="single line" style="width:100px;text-align:center" *ngFor="let p of people; trackBy: trackByItem">
-      <i *ngIf="permission.insert" routerLink="/check-manage" [queryParams]="{man:p}" style="color:chocolate" class="add square icon"></i>
-      <span>{{p}}</span>
-    </th>
-  </tr>
+<table id="ui_table" class="ui celled table" [style.width]="((people.length)*100 +140) + 'px'">
+  <thead>
+    <tr>
+      <th style="width: 140px;height:40px;text-align:center">時間\人</th>
+      <th class="single line" style="width:100px;text-align:center" *ngFor="let p of people; trackBy: trackByItem">
+        <i *ngIf="permission.insert" routerLink="/check-manage" [queryParams]="{man:p}" style="color:chocolate" class="add square icon"></i>
+        <span>{{p}}</span>
+      </th>
+    </tr>
+  </thead>
   <tr *ngFor="let d of dates; trackBy: trackByItem">
     <td style="text-align:center" [ngStyle]="{'border-top-width': d.getDay() === 5 ? '3px' : '1px'}">
       {{d.toLocaleDateString()}} 週{{['一','二','三','四','五'][d.getDay()-1]}}

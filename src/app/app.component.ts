@@ -1,6 +1,6 @@
 import { AuthService } from './service/auth.service';
 import { Method } from './service/method';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 
 declare global {
   interface Array<T> {
@@ -27,7 +27,9 @@ Array.prototype.getMaxItem = function (): any {
 export class AppComponent implements OnInit {
   title = '訂餐帳本';
 
-  constructor(public auth: AuthService) {
+  constructor(public auth: AuthService,
+    private ngZone: NgZone,
+  ) {
     auth.handleAuthentication();
   }
 

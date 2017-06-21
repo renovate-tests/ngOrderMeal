@@ -1,7 +1,7 @@
 import { AngularFireDatabase } from 'angularfire2/database';
 import {
   Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef,
-  Output, EventEmitter, OnChanges, SimpleChanges
+  Output, EventEmitter, OnChanges, SimpleChanges, NgZone
 } from '@angular/core';
 
 @Component({
@@ -26,16 +26,28 @@ export class ViewTableComponent implements OnInit, OnChanges {
   // tslint:disable-next-line:member-ordering
   MaxItem: (x: any[]) => any = R.reduce(R.maxBy(this.GetDate), 0);
 
-  constructor(private cdRef: ChangeDetectorRef, private db: AngularFireDatabase) { }
+  constructor(private cdRef: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private db: AngularFireDatabase) { }
 
   ngOnInit() {
+
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes) {
       this.cdRef.reattach();
       this.getBcashs();
+      if (changes['people'] && this.people.length > 0) {
+        this.ngZone.runOutsideAngular(() => {
+          const $table = $('#ui_table');
+          // console.log($table);
+          $table.floatThead({
+            position: 'fixed',
+          });
+          $table.floatThead('reflow');
+        });
+      }
     }
-    // console.log(changes);
   }
 
   getBcashs() {
