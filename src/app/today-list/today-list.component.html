@@ -1,16 +1,59 @@
-<div class="flex-row-right">
-  <button class="circular ui icon button">
-  <i class="plus icon"></i>
-</button>
+<div class="flex-row-header" style="margin-top:-1px">
+  <button *ngIf="!addNew" style="margin-top:10px;margin-right:2em;height:36px" class="circular ui icon button" (click)="addNew = true;">
+      <i class="plus icon"></i>
+    </button>
+  <div class="ui card" style="width:388px" *ngIf="addNew">
+    <div class="content" [formGroup]="form">
+      <i class="right floated left icon"></i>
+      <label class="ui orange  right ribbon label" style="font-size:100%">新增今日帳單</label>
+      <div class="description" style="margin-top: 4px">
+        <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
+          <input type="text" placeholder="消費者" formControlName="man">
+          <a class="ui tag label" id="man">消費者</a>
+        </div>
+        <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
+          <input type="number" placeholder="消費" formControlName="pay">
+          <a class="ui tag label" id="pay">消費</a>
+        </div>
+        <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
+          <input type="number" placeholder="儲值" formControlName="topUp">
+          <a class="ui tag label" id="topUp">儲值</a>
+        </div>
+        <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
+          <input type="text" placeholder="店家" formControlName="store">
+          <a class="ui tag label" id="store">店家</a>
+        </div>
+        <div class="ui reply form">
+          <div class="field">
+            <textarea rows="3" id="content" formControlName="content" placeholder="消費內容"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="extra content" style="display:flex;justify-content:space-between">
+      <button class="ui labeled icon button" (click)="addNew = false" style="height:33px">
+        <i class="arrow left icon"></i>取消
+      </button>
+      <button class="ui labeled icon button" style="margin-left: auto;height:33px" (click)="add()">
+        <i class="checkmark icon"></i>確認
+      </button>
+    </div>
+  </div>
 </div>
 <br>
 <div class="ui four cards">
-  <div *ngFor="let p of ['會員1','會員2','會員3','會員4','會員5','會員6']" class="ui card">
+  <div *ngFor="let p of todayArr" class="ui card" style="min-width:388px">
     <div class="content">
       <i class="right floated left icon"></i>
-      <div class="header">{{p}}</div>
+      <div class="header">{{p.man}}</div>
       <div class="description">
         <p>相關資料</p>
+         {{"店家:"+p.store}}
+        <br> {{"消費內容:"+ p.content}}
+        <br> {{"消費者:"+ p.man}}
+        <!--<br> {{"時間:"+p.dateAt}}-->
+        <!--<br> {{"目前金額:"+(p.bcash +p.topUp-p.pay )}}-->
+        <br> {{"建立時間:"+(getDateTime(p) )}}
       </div>
     </div>
     <div class="extra content flex-row-between">
