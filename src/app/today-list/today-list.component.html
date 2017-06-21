@@ -1,0 +1,28 @@
+<div class="flex-row-right">
+  <button class="circular ui icon button">
+  <i class="plus icon"></i>
+</button>
+</div>
+<br>
+<div class="ui four cards">
+  <div *ngFor="let p of ['會員1','會員2','會員3','會員4','會員5','會員6']" class="ui card">
+    <div class="content">
+      <i class="right floated left icon"></i>
+      <div class="header">{{p}}</div>
+      <div class="description">
+        <p>相關資料</p>
+      </div>
+    </div>
+    <div class="extra content flex-row-between">
+      <div class="">
+        <i class="checkmark icon"></i>待確認
+      </div>
+      <div>
+        <i class="icon edit"></i>編輯
+      </div>
+      <div style="align-self:flex-end">
+        <i class="icon remove"></i>刪除
+      </div>
+    </div>
+  </div>
+</div>

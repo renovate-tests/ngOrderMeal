@@ -41,6 +41,11 @@ export class ViewTableComponent implements OnInit, OnChanges {
   getBcashs() {
     for (const value of this.people) {
       const item = this.groupObj[value].getMaxItem();
+<<<<<<< HEAD
+=======
+      // const item = this.MaxItem(this.groupObj[value]);
+      // console.log(item, this.groupObj[value]);
+>>>>>>> d77dd41e4883e57644398ec3356e78ad5dc50db9
       this.bcashs[value] = item.bcash + item.topUp - item.pay;
     }
   }
@@ -67,7 +72,7 @@ export class ViewTableComponent implements OnInit, OnChanges {
 
   /*  取得單筆帳單  */
   getInfo(dat, name): any {
-    let caldata = this.groupObj[name].filter(x =>  Date.parse(x.dateAt) <= dat.valueOf());
+    let caldata = this.groupObj[name].filter(x => Date.parse(x.dateAt) <= dat.valueOf());
 
     // 取得查詢範圍內的第一筆資料，保留第一筆先前金額
     const minDateItem = (caldata as any[]).getMinItem();

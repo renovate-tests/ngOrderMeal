@@ -22,6 +22,7 @@ import { MultiInsertComponent } from './multi-insert/multi-insert.component';
 import { StoreModule } from '@ngrx/store';
 import { OrderReducer } from './ngrx/reducer/order-reducer';
 import { EffectsModule } from '@ngrx/effects';
+import { TodayListComponent } from './today-list/today-list.component';
 
 const firebase = {
   apiKey: 'AIzaSyC22dRy8lpaa7QHsfzO_BUWoR4MMVuofd8',
@@ -42,7 +43,8 @@ const firebase = {
     ViewTableComponent,
     DatePickerDirective,
     CallbackComponent,
-    MultiInsertComponent
+    MultiInsertComponent,
+    TodayListComponent
   ],
   imports: [
     BrowserModule,
