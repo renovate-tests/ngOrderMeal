@@ -1,5 +1,5 @@
 <div class="flex-row-header" style="margin-top:-1px">
-  <button *ngIf="!addNew" style="margin-top:10px;margin-right:2em;height:36px" class="circular ui icon button" (click)="addNew = true;">
+  <button *ngIf="!addNew" style="margin-top:10px;margin-right:2em;height:36px" class="circular ui icon button" (click)="new_one()">
       <i class="plus icon"></i>
     </button>
   <div class="ui card" style="width:388px" *ngIf="addNew">
@@ -10,6 +10,13 @@
         <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
           <input type="text" placeholder="消費者" formControlName="man">
           <a class="ui tag label" id="man">消費者</a>
+        </div>
+        <div id="dropdown" class="ui dropdown labeled search icon">
+          <i class="user icon"></i>
+          <div class="menu">
+            <!--<div class="item" (click)="select(m)" *ngFor="let m of ['會員A','會員B','會員C','會員D']">{{m}}</div>-->
+            <div class="item" (click)="select(m.$value)" *ngFor="let m of people">{{m.$value}}</div>
+          </div>
         </div>
         <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
           <input type="number" placeholder="消費" formControlName="pay">
@@ -42,7 +49,7 @@
 </div>
 <br>
 <div class="ui four cards">
-  <div *ngFor="let p of todayArr" class="ui card" style="min-width:388px">
+  <div *ngFor="let p of todayArr" class="ui card" style="min-width:345px">
     <div class="content" *ngIf="!p.isedit;else edit_temp">
       <i class="right floated left icon"></i>
       <div class="header">{{p.man}}</div>
@@ -94,10 +101,10 @@
       <div id="check" (click)="check()">
         <i class="checkmark icon"></i>待確認
       </div>
-      <div style="margin-left:1.5em" id="edit" (click)="edit(editItem.title)" #editItem [title]="p?.$key">
+      <div style="margin-left:1.5em" id="edit" (click)="edit(p?.$key)">
         <i class="icon edit"></i>編輯
       </div>
-      <div style="margin-left:auto" id="remove" (click)="remove(delItem.title)" #delItem [title]="p?.$key">
+      <div style="margin-left:auto" id="remove" (click)="remove(p?.$key)">
         <i class="icon remove"></i>刪除
       </div>
     </div>
@@ -106,7 +113,7 @@
         <button class="ui labeled icon button" style="height:33px" (click)="cancel()">
           <i class="arrow left icon"></i>取消
         </button>
-        <button class="ui labeled icon button" style="margin-left: auto;height:33px" (click)="update(editItem_update.title)" #editItem_update [title]="p?.$key">
+        <button class="ui labeled icon button" style="margin-left: auto;height:33px" (click)="update(p?.$key)">
           <i class="checkmark icon"></i>確認
         </button>
       </div>
