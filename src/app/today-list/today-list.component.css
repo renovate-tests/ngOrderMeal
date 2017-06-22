@@ -9,3 +9,15 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+#check:hover {
+    color: green;
+}
+
+#edit:hover {
+    color: blue;
+}
+
+#remove:hover {
+    color: red;
+}

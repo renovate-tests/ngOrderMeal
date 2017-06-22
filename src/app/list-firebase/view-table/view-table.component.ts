@@ -21,10 +21,8 @@ export class ViewTableComponent implements OnInit, OnChanges {
   datapoint: any;
   bcashs = {};
   GetDate = (x: UserData) => Date.parse(x.dateAt);
-  // tslint:disable-next-line:member-ordering
-  MinItem: (x: any[]) => any = R.reduce(R.minBy(this.GetDate), Infinity);
-  // tslint:disable-next-line:member-ordering
-  MaxItem: (x: any[]) => any = R.reduce(R.maxBy(this.GetDate), 0);
+  MinDateItem = (x: any[]) => R.reduce(R.minBy(this.GetDate), x[0], x.slice(1));
+  MaxDateItem = (x: any[]) => R.reduce(R.maxBy(this.GetDate), x[0], x.slice(1));
 
   constructor(private cdRef: ChangeDetectorRef,
     private ngZone: NgZone,
@@ -40,7 +38,6 @@ export class ViewTableComponent implements OnInit, OnChanges {
       if (changes['people'] && this.people.length > 0) {
         this.ngZone.runOutsideAngular(() => {
           const $table = $('#ui_table');
-          // console.log($table);
           $table.floatThead({
             position: 'fixed',
           });
@@ -52,8 +49,10 @@ export class ViewTableComponent implements OnInit, OnChanges {
 
   getBcashs() {
     for (const value of this.people) {
-      const item = this.groupObj[value].getMaxItem();
-      this.bcashs[value] = item.bcash + item.topUp - item.pay;
+      const item = this.MaxDateItem(this.groupObj[value]);
+      if (item) {
+        this.bcashs[value] = item.bcash + item.topUp - item.pay;
+      }
     }
   }
 
@@ -82,7 +81,7 @@ export class ViewTableComponent implements OnInit, OnChanges {
     let caldata = this.groupObj[name].filter(x => Date.parse(x.dateAt) <= dat.valueOf());
 
     // 取得查詢範圍內的第一筆資料，保留第一筆先前金額
-    const minDateItem = (caldata as any[]).getMinItem();
+    const minDateItem = this.MinDateItem(caldata);
 
     // 當前資料
     const infodata = caldata.find(x => Date.parse(x.dateAt) === dat.valueOf());

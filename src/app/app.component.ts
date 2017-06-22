@@ -1,23 +1,5 @@
 import { AuthService } from './service/auth.service';
-import { Method } from './service/method';
-import { Component, OnInit, NgZone } from '@angular/core';
-
-declare global {
-  interface Array<T> {
-    getMinItem(): any;
-    getMaxItem(): any;
-  }
-}
-
-Array.prototype.getMinItem = function (): any {
-  return (this as any[]).reduce((x, y) =>
-    new Date(x.dateAt) < new Date(y.dateAt) ? x : y);
-};
-
-Array.prototype.getMaxItem = function (): any {
-  return (this as any[]).reduce((x, y) =>
-    new Date(x.dateAt) > new Date(y.dateAt) ? x : y);
-};
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -27,15 +9,13 @@ Array.prototype.getMaxItem = function (): any {
 export class AppComponent implements OnInit {
   title = '訂餐帳本';
 
-  constructor(public auth: AuthService,
-    private ngZone: NgZone,
+  constructor(public auth: AuthService
   ) {
     auth.handleAuthentication();
   }
 
   ngOnInit(): void {
     // console.log(new OpaqueToken('1'));
-    // console.log(Method.GetFirebaseKeyTime('-KkUtgyiKXyQw71RSmDN'));
   }
 
 }

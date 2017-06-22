@@ -43,7 +43,7 @@
 <br>
 <div class="ui four cards">
   <div *ngFor="let p of todayArr" class="ui card" style="min-width:388px">
-    <div class="content">
+    <div class="content" *ngIf="!p.isedit;else edit_temp">
       <i class="right floated left icon"></i>
       <div class="header">{{p.man}}</div>
       <div class="description">
@@ -61,16 +61,55 @@
         <br> {{"建立時間:"+(getDateTime(p) )}}
       </div>
     </div>
-    <div class="extra content flex-row-between">
-      <div class="">
+    <ng-template #edit_temp>
+      <div class="content" [formGroup]="form1">
+        <i class="right floated left icon"></i>
+        <label class="ui orange  right ribbon label" style="font-size:100%">編輯今日帳單</label>
+        <div class="description" style="margin-top: 4px">
+          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
+            <input type="text" id="man" placeholder="消費者" formControlName="man">
+            <label class="ui tag label" for="man">消費者</label>
+          </div>
+          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
+            <input type="number" id="pay" placeholder="消費" formControlName="pay">
+            <label class="ui tag label" for="pay">消費</label>
+          </div>
+          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
+            <input type="number" id="topUp" placeholder="儲值" formControlName="topUp">
+            <label class="ui tag label" for="topUp">儲值</label>
+          </div>
+          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
+            <input type="text" id="store" placeholder="店家" formControlName="store">
+            <label class="ui tag label" for="store">店家</label>
+          </div>
+          <div class="ui reply form">
+            <div class="field">
+              <textarea rows="3" id="content" formControlName="content" placeholder="消費內容"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <div class="extra content flex-row-between" *ngIf="!p.isedit;else edit_button">
+      <div id="check" (click)="check()">
         <i class="checkmark icon"></i>待確認
       </div>
-      <div>
+      <div style="margin-left:1.5em" id="edit" (click)="edit(editItem.title)" #editItem [title]="p?.$key">
         <i class="icon edit"></i>編輯
       </div>
-      <div style="align-self:flex-end">
+      <div style="margin-left:auto" id="remove" (click)="remove(delItem.title)" #delItem [title]="p?.$key">
         <i class="icon remove"></i>刪除
       </div>
     </div>
+    <ng-template #edit_button>
+      <div class="extra content" style="display:flex;justify-content:space-between">
+        <button class="ui labeled icon button" style="height:33px" (click)="cancel()">
+          <i class="arrow left icon"></i>取消
+        </button>
+        <button class="ui labeled icon button" style="margin-left: auto;height:33px" (click)="update(editItem_update.title)" #editItem_update [title]="p?.$key">
+          <i class="checkmark icon"></i>確認
+        </button>
+      </div>
+    </ng-template>
   </div>
 </div>

@@ -42,6 +42,7 @@ export class CheckManageComponent implements OnInit, OnDestroy {
       this.isNew = true;
       return;
     }
+    
     if (param && Object.keys(param).length > 0) {
       this.store.dispatch({
         type: 'GETDATA', payload: { man: param.man }
