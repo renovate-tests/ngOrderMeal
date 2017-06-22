@@ -48,7 +48,7 @@ export class TodayListComponent implements OnInit {
   new_one() {
     this.addNew = true;
     this.form = this._fb.group(this.defaultItem);
-    setTimeout(() => { $('#dropdown').dropdown(); }, 0);
+    setTimeout(() => { $('#dropdown').dropdown({ fullTextSearch: true }); }, 0);
   }
 
   check() {

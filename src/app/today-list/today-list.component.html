@@ -11,20 +11,23 @@
           <input type="text" placeholder="消費者" formControlName="man">
           <a class="ui tag label" id="man">消費者</a>
         </div>
-        <div id="dropdown" class="ui dropdown labeled search icon">
+        <div id="dropdown" class="ui dropdown  search icon">
           <i class="user icon"></i>
-          <div class="menu">
-            <!--<div class="item" (click)="select(m)" *ngFor="let m of ['會員A','會員B','會員C','會員D']">{{m}}</div>-->
+          <div class="menu" style="max-height: 25em;">
+            <div class="ui search icon input" *ngIf="people.length > 9">
+              <i class="search icon"></i>
+              <input type="text" name="search" placeholder="查詢...">
+            </div>
             <div class="item" (click)="select(m.$value)" *ngFor="let m of people">{{m.$value}}</div>
           </div>
         </div>
         <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
-          <input type="number" placeholder="消費" formControlName="pay">
-          <a class="ui tag label" id="pay">消費</a>
+          <input type="number" placeholder="消費" style="color:red" formControlName="pay">
+          <a class="ui tag label" id="pay" style="color:red">消費</a>
         </div>
         <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
-          <input type="number" placeholder="儲值" formControlName="topUp">
-          <a class="ui tag label" id="topUp">儲值</a>
+          <input type="number" placeholder="儲值" style="color:green" formControlName="topUp">
+          <a class="ui tag label" id="topUp" style="color:green">儲值</a>
         </div>
         <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
           <input type="text" placeholder="店家" formControlName="store">
@@ -38,10 +41,10 @@
       </div>
     </div>
     <div class="extra content" style="display:flex;justify-content:space-between">
-      <button class="ui labeled icon button" (click)="addNew = false" style="height:33px">
+      <button class="ui labeled icon button" (click)="addNew = false" style="height:33px;padding-top: 9px;">
         <i class="arrow left icon"></i>取消
       </button>
-      <button class="ui labeled icon button" style="margin-left: auto;height:33px" (click)="add()">
+      <button class="ui labeled icon button" style="margin-left: auto;height:33px;padding-top: 9px;" (click)="add()" [ngClass]="{'disabled' : (form.value.topUp + form.value.pay) === 0 || form.value.man === ''}">
         <i class="checkmark icon"></i>確認
       </button>
     </div>
@@ -54,17 +57,11 @@
       <i class="right floated left icon"></i>
       <div class="header">{{p.man}}</div>
       <div class="description">
-        <p>相關資料</p>
-        {{"店家:"+p.store}}
+        {{"店家:"+p.store}}<br>
+        <span style="color:red">{{"今日消費:"+p.pay}}</span>
+        <br>
+        <span style="color:green">{{"今日儲值:"+p.topUp}}</span>
         <br> {{"消費內容:"+ p.content}}
-        <br>
-        <span style="color:red">
-        {{"今日消費:"+p.pay}}
-        </span>
-        <br>
-        <span style="color:green">
-        {{"今日儲值:"+p.topUp}}
-        </span>
         <br> {{"建立時間:"+(getDateTime(p) )}}
       </div>
     </div>
@@ -73,19 +70,19 @@
         <i class="right floated left icon"></i>
         <label class="ui orange  right ribbon label" style="font-size:100%">編輯今日帳單</label>
         <div class="description" style="margin-top: 4px">
-          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
-            <input type="text" id="man" placeholder="消費者" formControlName="man">
-            <label class="ui tag label" for="man">消費者</label>
+          <div class="ui right labeled disabled input" style="margin-bottom: 4px; height:30px ">
+            <input type="text" placeholder="消費者" formControlName="man">
+            <label class="ui tag label">消費者</label>
           </div>
-          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
-            <input type="number" id="pay" placeholder="消費" formControlName="pay">
-            <label class="ui tag label" for="pay">消費</label>
+          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:30px">
+            <input type="number" id="pay" placeholder="消費" style="color:red" formControlName="pay">
+            <label class="ui tag label" for="pay" style="color:red">消費</label>
           </div>
-          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
-            <input type="number" id="topUp" placeholder="儲值" formControlName="topUp">
-            <label class="ui tag label" for="topUp">儲值</label>
+          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:30px">
+            <input type="number" id="topUp" placeholder="儲值" style="color:green" formControlName="topUp">
+            <label class="ui tag label" for="topUp" style="color:green">儲值</label>
           </div>
-          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
+          <div class="ui rigth labeled input" style="margin-bottom: 4px; height:30px">
             <input type="text" id="store" placeholder="店家" formControlName="store">
             <label class="ui tag label" for="store">店家</label>
           </div>
@@ -110,10 +107,11 @@
     </div>
     <ng-template #edit_button>
       <div class="extra content" style="display:flex;justify-content:space-between">
-        <button class="ui labeled icon button" style="height:33px" (click)="cancel()">
+        <button class="ui labeled icon button" style="height:30px;padding-top: 8px;" (click)="cancel()">
           <i class="arrow left icon"></i>取消
         </button>
-        <button class="ui labeled icon button" style="margin-left: auto;height:33px" (click)="update(p?.$key)">
+        <button class="ui labeled icon button" style="margin-left: auto;height:30px;padding-top: 8px;" (click)="update(p?.$key)"
+          [ngClass]="{'disabled' : (form1.value.topUp + form1.value.pay) === 0}">
           <i class="checkmark icon"></i>確認
         </button>
       </div>
