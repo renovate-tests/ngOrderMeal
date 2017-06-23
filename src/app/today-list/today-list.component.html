@@ -14,11 +14,11 @@
         <div id="dropdown" class="ui dropdown  search icon">
           <i class="user icon"></i>
           <div class="menu" style="max-height: 25em;">
-            <div class="ui search icon input" *ngIf="people.length > 9">
+            <div class="ui search icon input" *ngIf="people_diff.length > 9">
               <i class="search icon"></i>
               <input type="text" name="search" placeholder="查詢...">
             </div>
-            <div class="item" (click)="select(m.$value)" *ngFor="let m of people">{{m.$value}}</div>
+            <div class="item" (click)="select(m)" *ngFor="let m of people_diff">{{m}}</div>
           </div>
         </div>
         <div class="ui rigth labeled input" style="margin-bottom: 4px; height:33px">
@@ -55,13 +55,17 @@
   <div *ngFor="let p of todayArr" class="ui card" style="min-width:345px">
     <div class="content" *ngIf="!p.isedit;else edit_temp">
       <i class="right floated left icon"></i>
-      <div class="header">{{p.man}}</div>
+      <div class="header">{{p.man}}
+      </div>
       <div class="description">
-        {{"店家:"+p.store}}<br>
+        <span style="color:green">{{"先前儲金:"+p.bcash}}</span>
+        <br> {{"店家:"+p.store}}
+        <br>
         <span style="color:red">{{"今日消費:"+p.pay}}</span>
         <br>
         <span style="color:green">{{"今日儲值:"+p.topUp}}</span>
         <br> {{"消費內容:"+ p.content}}
+        <br><span style="color:gray"> {{"確認後金額:"+ (p.bcash +p.topUp - p.pay)}}</span>
         <br> {{"建立時間:"+(getDateTime(p) )}}
       </div>
     </div>
@@ -95,15 +99,20 @@
       </div>
     </ng-template>
     <div class="extra content flex-row-between" *ngIf="!p.isedit;else edit_button">
-      <div id="check" (click)="check()">
+      <div id="check" (click)="check(p)" *ngIf="!p.ischeck;else edit_check">
         <i class="checkmark icon"></i>待確認
       </div>
-      <div style="margin-left:1.5em" id="edit" (click)="edit(p?.$key)">
+      <div style="margin-left:1.5em" id="edit" (click)="edit(p?.$key)" *ngIf="!p.ischeck">
         <i class="icon edit"></i>編輯
       </div>
-      <div style="margin-left:auto" id="remove" (click)="remove(p?.$key)">
+      <div style="margin-left:auto" id="remove" (click)="remove(p?.$key)" *ngIf="!p.ischeck">
         <i class="icon remove"></i>刪除
       </div>
+      <ng-template #edit_check>
+        <div style="color:green">
+          <i class="checkmark icon"></i>確認
+        </div>
+      </ng-template>
     </div>
     <ng-template #edit_button>
       <div class="extra content" style="display:flex;justify-content:space-between">

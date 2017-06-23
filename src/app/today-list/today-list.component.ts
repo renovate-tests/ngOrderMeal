@@ -15,6 +15,7 @@ export class TodayListComponent implements OnInit {
   addNew = false;
   todayArr = [];
   people = [];
+  people_diff = [];
   defaultItem = {
     topUp: 0,
     pay: 0,
@@ -22,6 +23,8 @@ export class TodayListComponent implements OnInit {
     man: '',
     content: ''
   };
+
+
   constructor(private db: AngularFireDatabase,
     private _fb: FormBuilder,
     private ngZone: NgZone
@@ -35,24 +38,25 @@ export class TodayListComponent implements OnInit {
       this.todayArr = x;
       this.todayArr.forEach(z => {
         z.isedit = false;
-        z.ischeck = false;
+        // z.ischeck = false;
       })
     });
     this.db.list('/people').subscribe(x => {
       this.people = x;
-      console.log(x);
     });
+  }
 
+  reflech_people_diff() {
+    this.people_diff = R.difference(this.people.map(x => x.man), this.todayArr.map(x => x.man));
   }
 
   new_one() {
     this.addNew = true;
     this.form = this._fb.group(this.defaultItem);
-    setTimeout(() => { $('#dropdown').dropdown({ fullTextSearch: true }); }, 0);
-  }
-
-  check() {
-    console.log('check');
+    setTimeout(() => {
+      $('#dropdown').dropdown({ fullTextSearch: true });
+      this.reflech_people_diff();
+    }, 0);
   }
 
   select(man) {
@@ -74,17 +78,29 @@ export class TodayListComponent implements OnInit {
 
   add() {
     const new_data: UserData = this.form.value;
+    const item = this.people.find(x => x.man === new_data.man);
+    // 無此成員，增加成員
+    if (!item) {
+      new_data.bcash = 0;
+      this.db.list('/people').push({ man: new_data.man, bcash: new_data.bcash });
+    }
+
     console.log(new_data);
     this.db.list('/todayItems').push(new_data)
       .then(() => {
-        this.addNew = false;
         console.log('新增成功');
       })
       .catch(() => { console.log('新增失敗'); });
-    // 無此成員，增加成員
-    if (!R.contains(new_data.man, this.people)) {
-      this.db.list('/people').push(new_data.man);
-    }
+    this.addNew = false;
+
+  }
+
+  check(p) {
+    console.log('check', p);
+
+    this.db.list('/todayItems').update(`${p.$key}`, { ischeck: true })
+      .then(() => { console.log('確認成功'); })
+      .catch(() => { console.log('修改失敗'); });
   }
 
   update(key) {
@@ -105,6 +121,7 @@ export class TodayListComponent implements OnInit {
         .then(() => { console.log('刪除成功'); })
         .catch(() => { console.log('刪除失敗'); });
     }
+    this.reflech_people_diff();
   }
 
   getDateTime(item: any) {
