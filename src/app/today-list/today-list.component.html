@@ -99,17 +99,22 @@
       </div>
     </ng-template>
     <div class="extra content flex-row-between" *ngIf="!p.isedit;else edit_button">
-      <div id="check" (click)="check(p)" *ngIf="!p.ischeck;else edit_check">
-        <i class="checkmark icon"></i>待確認
-      </div>
-      <div style="margin-left:1.5em" id="edit" (click)="edit(p?.$key)" *ngIf="!p.ischeck">
-        <i class="icon edit"></i>編輯
-      </div>
-      <div style="margin-left:auto" id="remove" (click)="remove(p?.$key)" *ngIf="!p.ischeck">
-        <i class="icon remove"></i>刪除
-      </div>
+      <ng-container *ngIf="!p.ischeck;else edit_check">
+        <div id="check" (click)="check(p)">
+          <i class="checkmark icon"></i>待確認
+        </div>
+        <div style="margin-left:1.5em" id="edit" (click)="edit(p?.$key)">
+          <i class="icon edit"></i>編輯
+        </div>
+        <div style="margin-left:auto" id="remove" (click)="remove(p?.$key)">
+          <i class="icon remove"></i>刪除
+        </div>
+      </ng-container>
       <ng-template #edit_check>
-        <div style="color:green">
+        <div id="uncheck" (click)="uncheck(p)" *ngIf="isTimeout">
+          <i class="arrow circle left icon"></i>取消
+        </div>
+        <div style="color:green;margin-left:auto">
           <i class="checkmark icon"></i>確認
         </div>
       </ng-template>

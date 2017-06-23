@@ -9,13 +9,14 @@ import { Method } from "app/service/method";
   styleUrls: ['./today-list.component.css']
 })
 export class TodayListComponent implements OnInit {
-
   form: FormGroup;
   form1: FormGroup;
   addNew = false;
   todayArr = [];
   people = [];
   people_diff = [];
+  today = new Date();
+  today_timeout = new Date();
   defaultItem = {
     topUp: 0,
     pay: 0,
@@ -24,13 +25,15 @@ export class TodayListComponent implements OnInit {
     content: ''
   };
 
-
   constructor(private db: AngularFireDatabase,
     private _fb: FormBuilder,
     private ngZone: NgZone
   ) {
     this.form = this._fb.group(this.defaultItem);
     this.form1 = this._fb.group(this.defaultItem);
+    this.today_timeout.setHours(17);
+    this.today_timeout.setMinutes(0);
+    this.today_timeout.setSeconds(0);
   }
 
   ngOnInit() {
@@ -38,7 +41,6 @@ export class TodayListComponent implements OnInit {
       this.todayArr = x;
       this.todayArr.forEach(z => {
         z.isedit = false;
-        // z.ischeck = false;
       })
     });
     this.db.list('/people').subscribe(x => {
@@ -48,6 +50,10 @@ export class TodayListComponent implements OnInit {
 
   reflech_people_diff() {
     this.people_diff = R.difference(this.people.map(x => x.man), this.todayArr.map(x => x.man));
+  }
+
+  public get isTimeout(): boolean {
+    return new Date() < this.today_timeout;
   }
 
   new_one() {
@@ -76,8 +82,24 @@ export class TodayListComponent implements OnInit {
     this.todayArr.forEach(z => z.isedit = false);
   }
 
+  check(p) {
+    console.log('check', p);
+    this.db.list('/todayItems').update(`${p.$key}`, { ischeck: true })
+      .then(() => { console.log('確認成功'); })
+      .catch(() => { console.log('確認失敗'); });
+  }
+
+  uncheck(p) {
+    console.log('uncheck', p);
+    this.db.list('/todayItems').update(`${p.$key}`, { ischeck: false })
+      .then(() => { console.log('取消成功'); })
+      .catch(() => { console.log('取消失敗'); });
+  }
+
   add() {
-    const new_data: UserData = this.form.value;
+    let new_data: UserData = this.form.value;
+    new_data.dateAt = this.today.toLocaleDateString();
+
     const item = this.people.find(x => x.man === new_data.man);
     // 無此成員，增加成員
     if (!item) {
@@ -92,15 +114,6 @@ export class TodayListComponent implements OnInit {
       })
       .catch(() => { console.log('新增失敗'); });
     this.addNew = false;
-
-  }
-
-  check(p) {
-    console.log('check', p);
-
-    this.db.list('/todayItems').update(`${p.$key}`, { ischeck: true })
-      .then(() => { console.log('確認成功'); })
-      .catch(() => { console.log('修改失敗'); });
   }
 
   update(key) {
