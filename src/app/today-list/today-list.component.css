@@ -25,3 +25,13 @@
 #uncheck:hover {
     color: orange;
 }
+
+button.ui.labeled.button {
+    height:30px !important;
+    padding-top: 8px;
+}
+
+div.ui.labeled.input {
+    height:30px !important;
+    margin-bottom: 4px;
+}

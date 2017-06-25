@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { AngularFireDatabase } from "angularfire2/database";
+import { AngularFireDatabase } from 'angularfire2/database';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Method } from "app/service/method";
+import { Method } from 'app/service/method';
 
 @Component({
   selector: 'app-today-list',
@@ -13,10 +13,11 @@ export class TodayListComponent implements OnInit {
   form1: FormGroup;
   addNew = false;
   todayArr = [];
+  beforArr = [];
   people = [];
   people_diff = [];
-  today = new Date();
   today_timeout = new Date();
+  today_num = 0;
   defaultItem = {
     topUp: 0,
     pay: 0,
@@ -34,26 +35,37 @@ export class TodayListComponent implements OnInit {
     this.today_timeout.setHours(17);
     this.today_timeout.setMinutes(0);
     this.today_timeout.setSeconds(0);
+    this.today_num = Date.parse(new Date().toLocaleDateString());
   }
 
   ngOnInit() {
     this.db.list('/todayItems').subscribe(x => {
-      this.todayArr = x;
+      this.todayArr = x.filter(z => Date.parse(z.dateAt) === this.today_num);
+      this.beforArr = x.filter(z => Date.parse(z.dateAt) !== this.today_num);
       this.todayArr.forEach(z => {
         z.isedit = false;
-      })
+      });
     });
     this.db.list('/people').subscribe(x => {
       this.people = x;
+      console.table(x);
     });
+  }
+
+  getBcash(p) {
+    const item = this.people.find(x => x.man === p.man);
+    return item ? item.bcash : 0;
   }
 
   reflech_people_diff() {
     this.people_diff = R.difference(this.people.map(x => x.man), this.todayArr.map(x => x.man));
   }
 
-  public get isTimeout(): boolean {
-    return new Date() < this.today_timeout;
+  isTimeout(p): boolean {
+    if (Date.parse(p.dateAt) === this.today_num) {
+      return this.today_timeout < new Date();
+    }
+    return true;
   }
 
   new_one() {
@@ -72,6 +84,7 @@ export class TodayListComponent implements OnInit {
   edit(key) {
     console.log('edit', key);
     this.todayArr.forEach(z => z.isedit = false);
+    // tslint:disable-next-line:prefer-const
     let item = this.todayArr.find(x => x.$key === key);
     item.isedit = true;
     this.form1.patchValue(item);
@@ -82,36 +95,43 @@ export class TodayListComponent implements OnInit {
     this.todayArr.forEach(z => z.isedit = false);
   }
 
-  check(p) {
-    console.log('check', p);
-    this.db.list('/todayItems').update(`${p.$key}`, { ischeck: true })
+  check(a) {
+    console.log('check');
+    this.db.list('/todayItems').update(`${a.$key}`, { ischeck: true })
+      .then(() => { console.log('確認成功'); })
+      .catch(() => { console.log('確認失敗'); });
+
+    const item = this.people.find(x => x.man === a.man);
+    this.db.list('/people').update(`${item.$key}`, { bcash: item.bcash + a.topUp - a.pay, })
       .then(() => { console.log('確認成功'); })
       .catch(() => { console.log('確認失敗'); });
   }
 
-  uncheck(p) {
-    console.log('uncheck', p);
-    this.db.list('/todayItems').update(`${p.$key}`, { ischeck: false })
+  uncheck(a) {
+    console.log('uncheck');
+    this.db.list('/todayItems').update(`${a.$key}`, { ischeck: false })
       .then(() => { console.log('取消成功'); })
       .catch(() => { console.log('取消失敗'); });
+
+    const item = this.people.find(x => x.man === a.man);
+    this.db.list('/people').update(`${item.$key}`, { bcash: item.bcash - a.topUp + a.pay, })
+      .then(() => { console.log('確認成功'); })
+      .catch(() => { console.log('確認失敗'); });
   }
 
   add() {
+    // tslint:disable-next-line:prefer-const
     let new_data: UserData = this.form.value;
-    new_data.dateAt = this.today.toLocaleDateString();
+    new_data.dateAt = new Date().toLocaleDateString();
+    (<any>new_data).ischeck = false;
 
-    const item = this.people.find(x => x.man === new_data.man);
     // 無此成員，增加成員
-    if (!item) {
-      new_data.bcash = 0;
-      this.db.list('/people').push({ man: new_data.man, bcash: new_data.bcash });
+    if (!R.contains({ man: new_data.man }, [this.people])) {
+      this.db.list('/people').push({ man: new_data.man, bcash: 0 });
     }
 
-    console.log(new_data);
     this.db.list('/todayItems').push(new_data)
-      .then(() => {
-        console.log('新增成功');
-      })
+      .then(() => { console.log('新增成功'); })
       .catch(() => { console.log('新增失敗'); });
     this.addNew = false;
   }
