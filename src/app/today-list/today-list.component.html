@@ -22,11 +22,11 @@
           </div>
         </div>
         <div class="ui rigth labeled input">
-          <input type="number" id="pay_i" placeholder="消費" style="color:red" formControlName="pay">
+          <input type="number" min="0" id="pay_i" placeholder="消費" style="color:red" formControlName="pay">
           <label class="ui tag label" for="pay_i" style="color:red">消費</label>
         </div>
         <div class="ui rigth labeled input">
-          <input type="number" id="topUp_i" placeholder="儲值" style="color:green" formControlName="topUp">
+          <input type="number" min="0" id="topUp_i" placeholder="儲值" style="color:green" formControlName="topUp">
           <label class="ui tag label" for="topUp_i" style="color:green">儲值</label>
         </div>
         <div class="ui rigth labeled input">
@@ -52,7 +52,7 @@
 </div>
 <br>
 <div class="ui four cards">
-  <div *ngFor="let p of todayArr" class="ui card"  [ngClass]="{'shadow': !p.ischeck}" style="min-width:345px">
+  <div *ngFor="let p of todayArr" class="ui card" [ngClass]="{'shadow': !p.ischeck}" style="min-width:345px">
     <div class="content" *ngIf="!p.isedit;else edit_temp">
       <i class="right floated left icon"></i>
       <div class="header">{{p.man}}
@@ -73,7 +73,7 @@
         <span style="color:green">{{"今日儲值:"+p.topUp}}</span>
         <br> {{"消費內容:"+ p.content}}
         <br>
-          <span *ngIf="!p.ischeck" style="color:gray"> {{"確認後金額:"+ (getBcash(p) +p.topUp - p.pay)}}</span>
+        <span *ngIf="!p.ischeck" style="color:gray"> {{"確認後金額:"+ (getBcash(p) +p.topUp - p.pay)}}</span>
         <br> {{"帳單日:"+p.dateAt }}
         <br> {{"建立時間:"+(getDateTime(p) )}}
       </div>
@@ -88,11 +88,11 @@
             <label class="ui tag label">消費者</label>
           </div>
           <div class="ui rigth labeled input">
-            <input type="number" id="pay" placeholder="消費" style="color:red" formControlName="pay">
+            <input type="number" min="0" id="pay" placeholder="消費" style="color:red" formControlName="pay">
             <label class="ui tag label" for="pay" style="color:red">消費</label>
           </div>
           <div class="ui rigth labeled input">
-            <input type="number" id="topUp" placeholder="儲值" style="color:green" formControlName="topUp">
+            <input type="number" min="0" id="topUp" placeholder="儲值" style="color:green" formControlName="topUp">
             <label class="ui tag label" for="topUp" style="color:green">儲值</label>
           </div>
           <div class="ui rigth labeled input">
@@ -148,7 +148,7 @@
   <div *ngFor="let p of beforArr" class="ui card" style="min-width:345px">
     <div class="content">
       <i class="right floated left icon"></i>
-      <div class="header">{{p.man}}  
+      <div class="header">{{p.man}}
         <span style="margin-left:1em; color:green" *ngIf="p.ischeck">確認</span>
         <span style="margin-left:1em; color:grey" *ngIf="!p.ischeck">未確認</span>
       </div>
