@@ -1,8 +1,8 @@
 <div class="flex-row-header" style="margin-top:-1px">
-  <button *ngIf="!addNew" style="margin-top:10px;margin-right:2em;height:36px" class="circular ui icon button" (click)="new_one()">
+  <button *ngIf="!addNew" style="margin-top:10px;margin-right:2em;height:36px" class="circular ui icon button shadow" (click)="new_one()">
       <i class="plus icon"></i>
     </button>
-  <div class="ui card" style="width:388px" *ngIf="addNew">
+  <div class="ui card shadow" style="width:388px" *ngIf="addNew">
     <div class="content" [formGroup]="form">
       <i class="right floated left icon"></i>
       <label class="ui orange  right ribbon label" style="font-size:100%">新增今日帳單</label>
@@ -52,7 +52,7 @@
 </div>
 <br>
 <div class="ui four cards">
-  <div *ngFor="let p of todayArr" class="ui card" style="min-width:345px">
+  <div *ngFor="let p of todayArr" class="ui card"  [ngClass]="{'shadow': !p.ischeck}" style="min-width:345px">
     <div class="content" *ngIf="!p.isedit;else edit_temp">
       <i class="right floated left icon"></i>
       <div class="header">{{p.man}}
