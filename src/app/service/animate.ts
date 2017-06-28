@@ -11,24 +11,35 @@ import {
 export const ani = [
     trigger('enterAnimation', [
         transition('void => *', [
-            style({ width: 100 }),
-            animate('1s ease', style({
-                width: 588,
+            style({ width: 0 }),
+            animate('500ms ease', style({
+                width: 388,
             })),
         ]),
         transition('* => void', [
-            animate('1s ease', style({
-                width: 0
+            animate('700ms ease', style({
+                opacity: 0
             })),
         ])
     ]),
-    /**
-     * 
-     */
-    trigger('trigger1', [
-        state('abc', style({ transform: 'scale(1)' })),
-        state('def', style({ transform: 'scale(2)' })),
-        transition('abc => def', animate('80ms ease-in')),
-        transition('def => abc', animate('80ms ease-in')),
+
+    trigger('enterAnimation1', [
+        transition('void => *', [
+            style({ opacity: 0 }),
+            animate('500ms 500ms ease', style({
+                opacity: 1,
+            })),
+        ]),
+    ]),
+
+
+    trigger('plusAnimation', [
+        transition('void => *', [
+            style({ opacity: 0, 'margin-left': -65 }),
+            animate('500ms 500ms ease', style({
+                opacity: 1
+            })),
+        ])
     ])
-]
+    // tslint:disable-next-line:eofline
+];

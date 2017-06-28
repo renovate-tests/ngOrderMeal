@@ -1,11 +1,12 @@
 <div class="flex-row-header" style="margin-top:-1px">
-  <button *ngIf="!addNew" style="margin-top:10px;margin-right:2em;height:36px" class="circular ui icon button shadow" (click)="new_one()">
+  <button *ngIf="!addNew" [@plusAnimation] style="margin-top:10px;margin-right:2em;height:36px" class="circular ui icon button shadow" (click)="new_one()">
       <i class="plus icon"></i>
     </button>
-  <div class="ui card shadow" style="width:388px" *ngIf="addNew">
-    <div class="content" [formGroup]="form">
+    <br>
+  <div class="ui card shadow" style="width:388px" *ngIf="addNew" [@enterAnimation]>
+    <div class="content" [formGroup]="form"  [@enterAnimation1]>
       <i class="right floated left icon"></i>
-      <label class="ui orange  right ribbon label" style="font-size:100%">新增今日帳單</label>
+      <label class="ui orange  right ribbon label" style="font-size:100%" >新增今日帳單</label>
       <div class="description" style="margin-top: 4px">
         <div class="ui rigth labeled input">
           <input type="text" id="man_i" placeholder="消費者" formControlName="man">
@@ -40,7 +41,7 @@
         </div>
       </div>
     </div>
-    <div class="extra content" style="display:flex;justify-content:space-between">
+    <div class="extra content" style="display:flex;justify-content:space-between" [@enterAnimation1]>
       <button class="ui labeled icon button" (click)="addNew = false">
         <i class="arrow left icon"></i>取消
       </button>

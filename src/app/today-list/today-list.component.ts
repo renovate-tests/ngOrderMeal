@@ -1,3 +1,4 @@
+import { ani } from './../service/animate';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,7 +7,8 @@ import { Method } from 'app/service/method';
 @Component({
   selector: 'app-today-list',
   templateUrl: './today-list.component.html',
-  styleUrls: ['./today-list.component.css']
+  styleUrls: ['./today-list.component.css'],
+  animations: ani
 })
 export class TodayListComponent implements OnInit {
   form: FormGroup;

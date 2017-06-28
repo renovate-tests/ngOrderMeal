@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Method } from "app/service/method";
+import { Method } from 'app/service/method';
 
 @Component({
   selector: 'app-today-before',
