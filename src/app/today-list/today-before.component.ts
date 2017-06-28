@@ -14,11 +14,7 @@ import { Method } from "app/service/method";
         <span style="margin-left:1em; color:grey" *ngIf="!p.ischeck">未確認</span>
       </div>
       <div class="description">
-        <span style="color:green">
-          儲金:
-          {{getBcash(p)}}
-        </span>
-        <br> {{"店家:"+p.store}}
+        {{"店家:"+p.store}}
         <br>
         <span style="color:red">{{"消費:"+p.pay}}</span>
         <br>
@@ -34,19 +30,15 @@ import { Method } from "app/service/method";
 })
 export class TodayBeforeComponent implements OnInit {
   @Input() beforArr = [];
-  @Input() people = [];
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  getBcash(p) {
-    const item = this.people.find(x => x.man === p.man);
-    return item ? item.bcash : 0;
-  }
-
   getDateTime(item: any) {
+    console.log(item);
+
     if (item && item.$key) {
       const dat = Method.GetFirebaseKeyTime(item.$key);
       return dat.toLocaleDateString() + ' ' + dat.toLocaleTimeString();

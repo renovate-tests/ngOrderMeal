@@ -41,14 +41,16 @@ export class TodayListComponent implements OnInit {
   ngOnInit() {
     this.db.list('/todayItems').subscribe(x => {
       this.todayArr = x.filter(z => Date.parse(z.dateAt) === this.today_num);
-      this.beforArr = x.filter(z => Date.parse(z.dateAt) !== this.today_num);
+      if (this.beforArr.length === 0) {
+        this.beforArr = x.filter(z => Date.parse(z.dateAt) !== this.today_num);
+      }
       this.todayArr.forEach(z => {
         z.isedit = false;
       });
     });
     this.db.list('/people').subscribe(x => {
       this.people = x;
-      console.table(x);
+      // console.table(x);
     });
   }
 
@@ -103,8 +105,8 @@ export class TodayListComponent implements OnInit {
 
     const item = this.people.find(x => x.man === a.man);
     this.db.list('/people').update(`${item.$key}`, { bcash: item.bcash + a.topUp - a.pay, })
-      .then(() => { console.log('確認成功'); })
-      .catch(() => { console.log('確認失敗'); });
+      .then(() => { console.log('bcash 確認成功'); })
+      .catch(() => { console.log('bcash 確認失敗'); });
   }
 
   uncheck(a) {
@@ -115,8 +117,8 @@ export class TodayListComponent implements OnInit {
 
     const item = this.people.find(x => x.man === a.man);
     this.db.list('/people').update(`${item.$key}`, { bcash: item.bcash - a.topUp + a.pay, })
-      .then(() => { console.log('確認成功'); })
-      .catch(() => { console.log('確認失敗'); });
+      .then(() => { console.log('bcash 取消成功'); })
+      .catch(() => { console.log('bcash 取消失敗'); });
   }
 
   add() {
