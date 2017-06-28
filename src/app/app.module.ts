@@ -23,6 +23,8 @@ import { StoreModule } from '@ngrx/store';
 import { OrderReducer } from './ngrx/reducer/order-reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { TodayListComponent } from './today-list/today-list.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TodayBeforeComponent } from "./today-list/today-before.component";
 
 const firebase = {
   apiKey: 'AIzaSyC22dRy8lpaa7QHsfzO_BUWoR4MMVuofd8',
@@ -44,7 +46,7 @@ const firebase = {
     DatePickerDirective,
     CallbackComponent,
     MultiInsertComponent,
-    TodayListComponent
+    TodayListComponent, TodayBeforeComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +57,8 @@ const firebase = {
     StoreModule.provideStore({ order: OrderReducer }),
     RouterModule.forRoot(appRoutes, { useHash: true }),
     AngularFireModule.initializeApp(firebase),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    BrowserAnimationsModule
   ],
   providers: [AuthService, IndexedDBService],
   bootstrap: [AppComponent]
