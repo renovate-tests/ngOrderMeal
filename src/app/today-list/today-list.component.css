@@ -47,11 +47,6 @@
 :host >>> .insert {
     z-index: 100;
     position: fixed;
-    margin: auto;
-    top:40%;
-    left:40%;
-    margin-top: -120px !important;
-    margin-left:calc(-5% - 10px);
 }
 
 :host >>> .cont {
@@ -61,5 +56,9 @@
     top: 0;
     bottom: 0;
     left: 0;
-    right: 0; 
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
