@@ -14,7 +14,7 @@ import { ani } from './../service/animate';
     (click)="new_one()">
       <i class="plus icon"></i>
   </button>
-  <div class="cont"  *ngIf="addNew">
+  <div class="cont"  *ngIf="addNew" [@outerAnimation]>
     <div class="ui card shadow insert" style="width:388px" [@enterAnimation]>
       <div class="content" [formGroup]="form"  [@enterAnimation1]>
         <i class="right floated left icon"></i>

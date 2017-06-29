@@ -16,11 +16,6 @@ export const ani = [
                 width: 388,
             })),
         ]),
-        transition('* => void', [
-            animate('700ms ease', style({
-                opacity: 0
-            })),
-        ])
     ]),
 
     trigger('enterAnimation1', [
@@ -31,7 +26,14 @@ export const ani = [
             })),
         ]),
     ]),
-
+    
+    trigger('outerAnimation', [
+        transition('* => void', [
+            animate('700ms ease', style({
+                opacity: 0
+            })),
+        ])
+    ]),
 
     trigger('plusAnimation', [
         transition('void => *', [
