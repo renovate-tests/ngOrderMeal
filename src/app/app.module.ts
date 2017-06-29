@@ -25,6 +25,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { TodayListComponent } from './today-list/today-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TodayBeforeComponent } from './today-list/today-before.component';
+import { TodayAddComponent } from "app/today-list/today-add.component";
 
 const firebase = {
   apiKey: 'AIzaSyC22dRy8lpaa7QHsfzO_BUWoR4MMVuofd8',
@@ -46,7 +47,7 @@ const firebase = {
     DatePickerDirective,
     CallbackComponent,
     MultiInsertComponent,
-    TodayListComponent, TodayBeforeComponent
+    TodayListComponent, TodayBeforeComponent, TodayAddComponent
   ],
   imports: [
     BrowserModule,

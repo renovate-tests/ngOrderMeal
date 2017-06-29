@@ -11,7 +11,6 @@ import { Method } from 'app/service/method';
   animations: ani
 })
 export class TodayListComponent implements OnInit {
-  form: FormGroup;
   form1: FormGroup;
   addNew = false;
   todayArr = [];
@@ -32,7 +31,7 @@ export class TodayListComponent implements OnInit {
     private _fb: FormBuilder,
     private ngZone: NgZone
   ) {
-    this.form = this._fb.group(this.defaultItem);
+    // this.form = this._fb.group(this.defaultItem);
     this.form1 = this._fb.group(this.defaultItem);
     this.today_timeout.setHours(17);
     this.today_timeout.setMinutes(0);
@@ -61,28 +60,11 @@ export class TodayListComponent implements OnInit {
     return item ? item.bcash : 0;
   }
 
-  reflech_people_diff() {
-    this.people_diff = R.difference(this.people.map(x => x.man), this.todayArr.map(x => x.man));
-  }
-
   isTimeout(p): boolean {
     if (Date.parse(p.dateAt) === this.today_num) {
       return this.today_timeout < new Date();
     }
     return true;
-  }
-
-  new_one() {
-    this.addNew = true;
-    this.form = this._fb.group(this.defaultItem);
-    setTimeout(() => {
-      $('#dropdown').dropdown({ fullTextSearch: true });
-      this.reflech_people_diff();
-    }, 0);
-  }
-
-  select(man) {
-    this.form.patchValue({ man: man });
   }
 
   edit(key) {
@@ -123,23 +105,6 @@ export class TodayListComponent implements OnInit {
       .catch(() => { console.log('bcash 取消失敗'); });
   }
 
-  add() {
-    // tslint:disable-next-line:prefer-const
-    let new_data: UserData = this.form.value;
-    new_data.dateAt = new Date().toLocaleDateString();
-    (<any>new_data).ischeck = false;
-
-    // 無此成員，增加成員
-    if (!R.contains({ man: new_data.man }, [this.people])) {
-      this.db.list('/people').push({ man: new_data.man, bcash: 0 });
-    }
-
-    this.db.list('/todayItems').push(new_data)
-      .then(() => { console.log('新增成功'); })
-      .catch(() => { console.log('新增失敗'); });
-    this.addNew = false;
-  }
-
   update(key) {
     const new_data: UserData = this.form1.value;
     console.log(new_data, key);
@@ -158,7 +123,6 @@ export class TodayListComponent implements OnInit {
         .then(() => { console.log('刪除成功'); })
         .catch(() => { console.log('刪除失敗'); });
     }
-    this.reflech_people_diff();
   }
 
   getDateTime(item: any) {

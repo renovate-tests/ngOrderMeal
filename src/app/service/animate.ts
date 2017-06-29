@@ -35,11 +35,17 @@ export const ani = [
 
     trigger('plusAnimation', [
         transition('void => *', [
-            style({ opacity: 0, 'margin-left': -65 }),
-            animate('500ms 500ms ease', style({
+            style({ opacity: 0 }),
+            animate('500ms ease', style({
                 opacity: 1
             })),
-        ])
+        ]),
+        // transition('* => void', [
+        //     style({ opacity: 1, 'margin-top': -165 }),
+        //     animate('500ms 500ms ease', style({
+        //         opacity: 0
+        //     })),
+        // ])
     ])
     // tslint:disable-next-line:eofline
 ];

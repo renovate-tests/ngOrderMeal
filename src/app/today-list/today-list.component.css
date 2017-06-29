@@ -26,20 +26,40 @@
     color: orange;
 }
 
-button.ui.labeled.button {
+:host >>> button.ui.labeled.button {
     height:30px !important;
     padding-top: 8px;
 }
 
-div.ui.labeled.input {
+:host >>> div.ui.labeled.input {
     height:30px !important;
     margin-bottom: 4px;
 }
 
-div.shadow {
+:host >>> div.shadow {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
 }
 
-button.shadow {
+:host >>> button.shadow {
     box-shadow: 2px 4px 3px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.19) !important;
+}
+
+:host >>> .insert {
+    z-index: 100;
+    position: fixed;
+    margin: auto;
+    top:40%;
+    left:40%;
+    margin-top: -120px !important;
+    margin-left:calc(-5% - 10px);
+}
+
+:host >>> .cont {
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; 
 }
