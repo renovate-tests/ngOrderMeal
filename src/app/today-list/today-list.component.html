@@ -82,7 +82,7 @@
         <button class="ui labeled icon button" (click)="cancel()">
           <i class="arrow left icon"></i>取消
         </button>
-        <button class="ui labeled icon button" style="margin-left: auto" (click)="update(p?.$key)" [ngClass]="{'disabled' : (form1.value.topUp + form1.value.pay) === 0}">
+        <button class="ui labeled icon button" style="margin-left: auto" (click)="update(p?.$key)" [ngClass]="{'disabled' : (form1.value.topUp + form1.value.pay) === 0 || !form1.dirty }">
           <i class="checkmark icon"></i>確認
         </button>
       </div>

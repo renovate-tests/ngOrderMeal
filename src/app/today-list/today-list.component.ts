@@ -19,7 +19,7 @@ export class TodayListComponent implements OnInit {
   people_diff = [];
   today_timeout = new Date();
   today_num = 0;
-  defaultItem = {
+  public static defaultItem = {
     topUp: 0,
     pay: 0,
     store: '',
@@ -31,8 +31,7 @@ export class TodayListComponent implements OnInit {
     private _fb: FormBuilder,
     private ngZone: NgZone
   ) {
-    // this.form = this._fb.group(this.defaultItem);
-    this.form1 = this._fb.group(this.defaultItem);
+    this.form1 = this._fb.group(TodayListComponent.defaultItem);
     this.today_timeout.setHours(17);
     this.today_timeout.setMinutes(0);
     this.today_timeout.setSeconds(0);
@@ -51,7 +50,6 @@ export class TodayListComponent implements OnInit {
     });
     this.db.list('/people').subscribe(x => {
       this.people = x;
-      // console.table(x);
     });
   }
 
@@ -70,7 +68,8 @@ export class TodayListComponent implements OnInit {
   edit(key) {
     console.log('edit', key);
     this.todayArr.forEach(z => z.isedit = false);
-    // tslint:disable-next-line:prefer-const
+    // 讓 dirty 設定為 false, 尚未找到更好的寫法
+    this.form1 = this._fb.group(TodayListComponent.defaultItem);
     let item = this.todayArr.find(x => x.$key === key);
     item.isedit = true;
     this.form1.patchValue(item);
