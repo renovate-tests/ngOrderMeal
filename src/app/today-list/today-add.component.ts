@@ -10,6 +10,7 @@ import { Observable } from "rxjs/Observable";
 @Component({
   selector: 'app-today-add',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: ['.star::after {content: " *"; color: red}'],
   animations: ani,
   template: `
   <div class="flex-row-header" style="margin-top:-1px">
@@ -17,15 +18,15 @@ import { Observable } from "rxjs/Observable";
     (click)="new_one()">
       <i class="plus icon"></i>
   </button>
-  <div class="cont"  *ngIf="addNew" [@outerAnimation]>
+  <div class="block_content"  *ngIf="addNew" [@outerAnimation]>
     <div class="ui card shadow insert" style="width:388px" [@enterAnimation]>
-      <div class="content" [formGroup]="form"  [@enterAnimation1]>
+      <div class="content" [formGroup]="form"  [@contentAnimation]>
         <i class="right floated left icon"></i>
         <label class="ui orange  right ribbon label" style="font-size:100%" >新增今日帳單</label>
         <div class="description" style="margin-top: 4px">
           <div class="ui rigth labeled input">
             <input type="text" id="man_i" placeholder="消費者" formControlName="man">
-            <label class="ui tag label" for="man_i">消費者</label>
+            <label class="ui tag label" for="man_i"><span class="star">消費者</span></label>
           </div>
           <div id="dropdown1" class="ui dropdown search icon">
             <i class="user icon"></i>
@@ -39,11 +40,11 @@ import { Observable } from "rxjs/Observable";
           </div>
           <div class="ui rigth labeled input">
             <input type="number" min="0" id="pay_i" placeholder="消費" style="color:red" formControlName="pay">
-            <label class="ui tag label" for="pay_i" style="color:red">消費</label>
+            <label class="ui tag label" for="pay_i" style="color:red"><span class="triangle">消費</span></label>
           </div>
           <div class="ui rigth labeled input">
             <input type="number" min="0" id="topUp_i" placeholder="儲值" style="color:green" formControlName="topUp">
-            <label class="ui tag label" for="topUp_i" style="color:green">儲值</label>
+            <label class="ui tag label" for="topUp_i" style="color:green"><span class="triangle">儲值</span></label>
           </div>
           <div class="ui rigth labeled input">
             <input type="text" id="store_i" placeholder="店家" formControlName="store">
@@ -56,7 +57,7 @@ import { Observable } from "rxjs/Observable";
           </div>
         </div>
       </div>
-      <div class="extra content" style="display:flex;justify-content:space-between" [@enterAnimation1]>
+      <div class="extra content" style="display:flex;justify-content:space-between" [@contentAnimation]>
         <button class="ui labeled icon button" (click)="addNew = false">
           <i class="arrow left icon"></i>取消
         </button>

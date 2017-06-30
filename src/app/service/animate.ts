@@ -18,7 +18,7 @@ export const ani = [
         ]),
     ]),
 
-    trigger('enterAnimation1', [
+    trigger('contentAnimation', [
         transition('void => *', [
             style({ opacity: 0 }),
             animate('500ms 500ms ease', style({
