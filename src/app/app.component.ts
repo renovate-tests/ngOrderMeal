@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = '訂餐帳本';
+  isResponsive = false;
 
   constructor(public auth: AuthService
   ) {
