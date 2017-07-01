@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 import { Method } from 'app/service/method';
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { AngularFireDatabase } from "angularfire2/database";
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { ani } from './../service/animate';
-import { TodayListComponent } from "app/today-list/today-list.component";
-import { Observable } from "rxjs/Observable";
+import { TodayListComponent } from 'app/today-list/today-list.component';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -111,7 +111,7 @@ export class TodayAddComponent implements OnInit {
 
     this.form.controls.man.valueChanges.subscribe((x) => {
       this.hasSameMan = R.contains(x, this.todayArr.map(y => y.man))
-    })
+    });
   }
 
   add() {

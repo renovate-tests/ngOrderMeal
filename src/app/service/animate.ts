@@ -26,7 +26,7 @@ export const ani = [
             })),
         ]),
     ]),
-    
+
     trigger('outerAnimation', [
         transition('* => void', [
             animate('700ms ease', style({

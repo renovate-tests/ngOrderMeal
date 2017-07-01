@@ -1,27 +1,44 @@
-<div class="ui  secondary pointing menu" [ngClass]="{'vertical': isResponsive}">
-  <a href="javascript:void(0);" style="font-size:15px;" class="item icon1" (click)="isResponsive = !isResponsive;">&#9776;</a>
-  <a class="item" style="width: 6.5em" routerLink="/home" routerLinkActive="active" #rla="routerLinkActive">
-  首頁<i *ngIf="rla.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
-  </a>
-  <a *ngIf="auth.isAuthenticated()" class="item" [ngClass]="{'disable':true, 'responsive': isResponsive}" style="width: 9em" routerLink="/today-list" routerLinkActive="active"
-    #rla1="routerLinkActive">
-  今日帳本<i *ngIf="rla1.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
-  </a>
-  <a *ngIf="auth.isAuthenticated()" class="item" [ngClass]="{'disable':true, 'responsive': isResponsive}" style="width: 9em" routerLink="/list-firebase"
-    routerLinkActive="active" #rla2="routerLinkActive">
-  歷史帳本<i *ngIf="rla2.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
-  </a>
-  <a *ngIf="auth.isAuthenticated()" class="item" [ngClass]="{'responsive': isResponsive}" style="width: 6.5em" routerLink="/check-manage" routerLinkActive="active"
-    #rla3="routerLinkActive">
-  新增<i *ngIf="rla3.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
-  </a>
-  <a *ngIf="auth.isAuthenticated()" class="item" [ngClass]="{'responsive': isResponsive}" style="width: 9em" routerLink="/multi-insert" routerLinkActive="active" #rla4="routerLinkActive">
-  多筆新增<i *ngIf="rla4.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
-  </a>
-  <div *ngIf="auth.isAuthenticated()" (click)="auth.logout()" class="right menu">
-    <a class="ui item active" routerLink="/home">登出</a>
+<div class="body">
+
+  <div class="site-container">
+    <div class="site-pusher">
+
+      <header class="header">
+
+        <a href="#" class="header__icon" id="header__icon"></a>
+
+        <nav class="menu">
+          <a class="item" style="width: 6.5em" routerLink="/home" routerLinkActive="active" #rla="routerLinkActive">
+              首頁<i *ngIf="rla.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
+          </a>
+          <a *ngIf="auth.isAuthenticated()" class="item" [ngClass]="{'disable':true }" style="width: 8em" routerLink="/today-list"
+            routerLinkActive="active" #rla1="routerLinkActive">
+          今日帳本<i *ngIf="rla1.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
+          </a>
+          <a *ngIf="auth.isAuthenticated()" class="item" [ngClass]="{'disable':true }" style="width: 8em" routerLink="/list-firebase"
+            routerLinkActive="active" #rla2="routerLinkActive">
+          歷史帳本<i *ngIf="rla2.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
+          </a>
+          <a *ngIf="auth.isAuthenticated()" class="item" style="width: 6.5em" routerLink="/check-manage" routerLinkActive="active"
+            #rla3="routerLinkActive">
+          新增<i *ngIf="rla3.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
+          </a>
+          <a *ngIf="auth.isAuthenticated()" class="item" style="width: 8em" routerLink="/multi-insert" routerLinkActive="active" #rla4="routerLinkActive">
+          多筆新增<i *ngIf="rla4.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
+          </a>
+          <a *ngIf="auth.isAuthenticated()" class="item" (click)="auth.logout()" style="margin-left:auto" routerLink="/home">登出</a>
+
+        </nav>
+
+      </header>
+
+      <div class="site-content">
+        <div class="container">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      <div class="site-cache" id="site-cache"></div>
+    </div>
   </div>
-</div>
-<div class="ui segment" style="height:100%">
-  <router-outlet></router-outlet>
+
 </div>

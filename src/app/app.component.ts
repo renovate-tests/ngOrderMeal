@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = '訂餐帳本';
-  isResponsive = false;
 
   constructor(public auth: AuthService
   ) {
@@ -16,6 +15,18 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    setTimeout(() => {
+      $('#header__icon').click((e) => {
+        e.preventDefault();
+        $('div.body').toggleClass('with--sidebar');
+      });
+
+      $('#site-cache').click(function (e) {
+        $('div.body').removeClass('with--sidebar');
+      });
+
+    }, 0);
     // console.log(new OpaqueToken('1'));
   }
 
