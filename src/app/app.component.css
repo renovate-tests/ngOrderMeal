@@ -16,6 +16,7 @@ div.body {
   height: 100%;
   --nav-width: 115px;
   --nav-nwidth: calc(-1 * var(--nav-width));
+  --nav-heigh: 55px;
 }
 
 
@@ -30,11 +31,11 @@ a {
   margin: 0 10px;
   padding-left: 6px;
   padding-bottom: 3px;
-  padding-top: 8px;
+  padding-top: 5px;
 }
 
 .site-content {
-  padding-top: 55px;
+  padding-top: var(--nav-heigh);
 }
 
 /* HEADER */
@@ -42,10 +43,11 @@ a {
   position: fixed;
   left: 0;
   right: 0;
-  height: 55px;
-  line-height: 55px;
+  height: var(--nav-heigh);
+  line-height: var(--nav-heigh);
   color: #fff;
   background-color: #3f51b5;
+  z-index: 10;  
 }
 
 .header__logo {
@@ -85,7 +87,7 @@ a {
 
   .site-content {
     position: absolute;
-    top: 66px;
+    top: var(--nav-heigh);
     right: 0;
     left: 0;
     bottom: 0;
@@ -103,7 +105,7 @@ a {
     display: block;
     float: left;
     width: 50px;
-    height: 66px;
+    height: var(--nav-heigh);
     cursor: pointer;
   }
   .header__icon:after {
@@ -112,7 +114,7 @@ a {
     display: block;
     width: 1rem;
     height: 0;
-    top: 16px;
+    top: 13px;
     left: 15px;
     box-shadow: 0 10px 0 1px #fff, 0 16px 0 1px #fff, 0 22px 0 1px #fff;
   }
@@ -125,8 +127,6 @@ a {
     background-color: #3849a2;
     /*    overflow-y: scroll;
         -webkit-overflow-scrolling: touch;*/
-    /*--nav-width: 200px;
-    --nav-nwidth: -200px;*/
     width: var(--nav-width);
     -webkit-transform: translateX(var(--nav-nwidth));
     transform: translateX(var(--nav-nwidth));

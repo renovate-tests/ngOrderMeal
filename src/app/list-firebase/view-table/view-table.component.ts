@@ -39,7 +39,8 @@ export class ViewTableComponent implements OnInit, OnChanges {
         this.ngZone.runOutsideAngular(() => {
           const $table = $('#ui_table');
           $table.floatThead({
-            position: 'fixed',
+            position: 'auto',
+            zIndex: 5
           });
           $table.floatThead('reflow');
         });

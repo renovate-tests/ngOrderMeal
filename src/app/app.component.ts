@@ -8,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = '訂餐帳本';
+  isAuth = false;
 
   constructor(public auth: AuthService
   ) {
     auth.handleAuthentication();
+    this.isAuth = auth.isAuthenticated();
   }
 
   ngOnInit(): void {
