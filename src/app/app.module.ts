@@ -7,25 +7,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { CheckManageComponent } from './check-manage/check-manage.component';
-import { ListFirebaseComponent } from './list-firebase/list-firebase.component';
 import { appRoutes } from './app-routing.module';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { DetailComponent } from './list-firebase/detail/detail.component';
-import { ViewTableComponent } from './list-firebase/view-table/view-table.component';
 import { DatePickerDirective } from './directive/date-picker.directive';
 import { MultiInsertComponent } from './multi-insert/multi-insert.component';
 import { StoreModule } from '@ngrx/store';
 import { OrderReducer } from './ngrx/reducer/order-reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { TodayListComponent } from './today-list/today-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TodayBeforeComponent } from './today-list/today-before.component';
-import { TodayAddComponent } from "app/today-list/today-add.component";
 
 const firebase = {
   apiKey: 'AIzaSyC22dRy8lpaa7QHsfzO_BUWoR4MMVuofd8',
@@ -41,27 +34,21 @@ const firebase = {
     AppComponent,
     HomeComponent,
     CheckManageComponent,
-    ListFirebaseComponent,
-    DetailComponent,
-    ViewTableComponent,
     DatePickerDirective,
     CallbackComponent,
-    MultiInsertComponent,
-    TodayListComponent, TodayBeforeComponent, TodayAddComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
-    FormsModule,
     HttpModule,
     EffectsModule.runAfterBootstrap(OrderEffects),
     StoreModule.provideStore({ order: OrderReducer }),
     RouterModule.forRoot(appRoutes, { useHash: true }),
     AngularFireModule.initializeApp(firebase),
     AngularFireDatabaseModule,
-    BrowserAnimationsModule
   ],
-  providers: [AuthService, IndexedDBService],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
