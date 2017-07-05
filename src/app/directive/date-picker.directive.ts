@@ -1,11 +1,9 @@
-import { FormGroup } from '@angular/forms';
-import { Directive, ElementRef, NgZone, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Directive, ElementRef, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Directive({
   selector: '[appDatePicker]'
 })
 export class DatePickerDirective implements OnInit {
-  @Input() form: FormGroup;
   @Input() formDateName = 'dateAt';
   @Input() initDate;
   @Output() ChangeDate = new EventEmitter();
@@ -14,14 +12,12 @@ export class DatePickerDirective implements OnInit {
 
   constructor(
     private _elementRef: ElementRef,
-    private _ngZone: NgZone
   ) { }
 
   ngOnInit(): void {
 
     const el = this._elementRef.nativeElement;
     const months = this.months;
-    const form = this.form;
     const controlName = this.formDateName;
     const ChangeDate = this.ChangeDate;
     $(el).calendar({

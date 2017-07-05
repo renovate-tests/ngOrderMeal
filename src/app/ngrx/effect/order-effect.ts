@@ -1,6 +1,6 @@
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+// import { Http } from '@angular/http';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -14,7 +14,8 @@ export class OrderEffects {
     constructor(
         private actions$: Actions,
         private db: AngularFireDatabase,
-        private http: Http) { }
+        // private http: Http
+        ) { }
     // tslint:disable-next-line:member-ordering
     @Effect() posts$: Observable<Action> = this.actions$
         .ofType('QUERY')
