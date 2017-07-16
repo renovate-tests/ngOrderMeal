@@ -9,14 +9,17 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = '訂餐帳本';
   isAuth = false;
+  name1 = '';
 
-  constructor(public auth: AuthService
-  ) {
+  constructor(public auth: AuthService) {
     auth.handleAuthentication();
     this.isAuth = auth.isAuthenticated();
   }
 
   ngOnInit(): void {
+    this.auth.getProfile((err, profile) => {
+      this.name1 = profile ? profile.name : '';
+    });
 
     setTimeout(() => {
       $('#header__icon').click((e) => {

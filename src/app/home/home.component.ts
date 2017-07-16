@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../service/auth.service';
 
@@ -9,7 +10,8 @@ import { AuthService } from '../service/auth.service';
 export class HomeComponent implements OnInit {
   profile: any;
 
-  constructor(public auth: AuthService) {
+  constructor(public auth: AuthService,
+    private router: Router) {
   }
 
   ngOnInit() {
@@ -19,6 +21,11 @@ export class HomeComponent implements OnInit {
     } else {
       this.auth.getProfile((err, profile) => {
         this.profile = profile;
+        if (!err) {
+          // this.router
+          this.router.navigate(['/today-list']);
+
+        }
         console.log(this.profile);
       });
     }

@@ -42,7 +42,7 @@ export class CheckManageComponent implements OnInit, OnDestroy {
       this.isNew = true;
       return;
     }
-    
+
     if (param && Object.keys(param).length > 0) {
       this.store.dispatch({
         type: 'GETDATA', payload: { man: param.man }
@@ -115,6 +115,7 @@ export class CheckManageComponent implements OnInit, OnDestroy {
   }
 
   ManCheck() {
+    // tslint:disable-next-line:no-unused-expression
     new PNotify({
       title: '增加成員測試中',
       text: '目前無作用'

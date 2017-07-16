@@ -4,8 +4,8 @@
       <header class="header">
         <a href="#" class="header__icon" id="header__icon"></a>
         <nav class="menu">
-          <a class="item" style="width: 6.5em" routerLink="/home" routerLinkActive="active" #rla="routerLinkActive">
-              首頁<i *ngIf="rla.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
+          <a *ngIf="!isAuth" class="item" style="width: 6.5em" routerLink="/home" routerLinkActive="active" #rla="routerLinkActive">
+              登入<i *ngIf="rla.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
           </a>
           <a *ngIf="isAuth" class="item" [ngClass]="{'disable':true }" style="width: 8em" routerLink="/today-list" routerLinkActive="active"
             #rla1="routerLinkActive">
@@ -22,6 +22,7 @@
           多筆新增<i *ngIf="rla4.isActive" style="margin-left:0.5em" class="folder open outline icon"></i>
           </a>
         </nav>
+        <a *ngIf="isAuth" style="float: right;margin-right:15px">{{name1}}</a>
         <a *ngIf="isAuth" style="float: right;margin-right:15px" (click)="auth.logout()" routerLink="/home">登出</a>
       </header>
       <div class="site-content">
